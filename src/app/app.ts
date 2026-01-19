@@ -1,12 +1,17 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { PwaUpdateService } from './core/services/pwa-update';
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
 })
-export class App {
-  protected readonly title = signal('lithos');
+export class App implements OnInit {
+  constructor(private pwaUpdate: PwaUpdateService) {}
+
+  ngOnInit(): void {
+    this.pwaUpdate.checkForUpdates();
+  }
 }

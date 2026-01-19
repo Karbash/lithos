@@ -1,0 +1,160 @@
+@use '../../styles/variables' as *;
+
+.lithos-login {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: $bg-primary;
+  position: relative;
+  z-index: 1;
+}
+
+.lithos-login-card {
+  width: 100%;
+  max-width: 340px;
+  background: $bg-secondary;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  padding: 2rem;
+}
+
+.lithos-login-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+
+  h1 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $text-primary;
+    margin: 0 0 0.5rem 0;
+  }
+
+  p {
+    font-size: 0.8rem;
+    color: $text-secondary;
+    margin: 0;
+  }
+}
+
+.lithos-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.lithos-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: $text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  input {
+    padding: 0.625rem 0.75rem;
+    background: $bg-input;
+    border: 1px solid $border-color;
+    border-radius: 6px;
+    color: $text-primary;
+    font-size: 0.875rem;
+    transition: border-color 0.15s ease;
+
+    &:focus {
+      outline: none;
+      border-color: $border-focus;
+    }
+
+    &::placeholder {
+      color: $text-muted;
+    }
+  }
+}
+
+.lithos-error {
+  font-size: 0.75rem;
+  color: $error;
+  padding: 0.5rem 0.75rem;
+  background: rgba($error, 0.1);
+  border-radius: 4px;
+  border-left: 2px solid $error;
+}
+
+.lithos-btn {
+  margin-top: 0.5rem;
+  padding: 0.625rem 1rem;
+  background: $accent;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover:not(:disabled) {
+    background: $accent-hover;
+  }
+
+  &:disabled {
+    background: $bg-tertiary;
+    color: $text-muted;
+    cursor: not-allowed;
+  }
+}
+
+.lithos-login-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid $border-color;
+
+  a {
+    font-size: 0.8rem;
+    color: $accent;
+    text-decoration: none;
+
+    &:hover {
+      color: $accent-hover;
+    }
+  }
+}
+
+// Responsividade mobile
+@media (max-width: 480px) {
+  .lithos-login {
+    padding: 0.75rem;
+  }
+
+  .lithos-login-card {
+    padding: 1.5rem;
+    border-radius: 6px;
+  }
+
+  .lithos-login-header {
+    margin-bottom: 1.25rem;
+
+    h1 {
+      font-size: 1.125rem;
+    }
+  }
+
+  .lithos-field {
+    input {
+      padding: 0.75rem;
+      font-size: 1rem; // Evita zoom no iOS
+    }
+  }
+
+  .lithos-btn {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+  }
+}

@@ -1,0 +1,168 @@
+@use '../../styles/variables' as *;
+
+.lithos-layout {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  background: $bg-primary;
+  color: $text-primary;
+  font-family:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  font-size: 13px;
+  overflow: hidden;
+  position: fixed;
+  inset: 0;
+}
+
+.lithos-header {
+  height: 38px;
+  background: $bg-secondary;
+  border-bottom: 1px solid $border-color;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  user-select: none;
+}
+
+.lithos-header-left,
+.lithos-header-right {
+  display: flex;
+  align-items: center;
+  min-width: 120px;
+}
+
+.lithos-header-right {
+  justify-content: flex-end;
+}
+
+.lithos-logo-icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+}
+
+.lithos-logo {
+  font-weight: 600;
+  font-size: 13px;
+  color: $text-primary;
+  letter-spacing: -0.2px;
+}
+
+.lithos-version {
+  font-size: 11px;
+  color: $text-muted;
+  font-weight: 500;
+}
+
+.lithos-header-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.lithos-nav {
+  display: flex;
+  gap: 2px;
+}
+
+.lithos-nav-item {
+  background: transparent;
+  border: none;
+  color: $text-secondary;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: $bg-tertiary;
+    color: $text-primary;
+  }
+}
+
+.lithos-main {
+  flex: 1;
+  overflow: hidden;
+  background: $bg-primary;
+  position: relative;
+}
+
+.lithos-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.lithos-watermark-logo {
+  width: 300px;
+  height: 300px;
+  opacity: 0.08;
+  filter: grayscale(100%);
+}
+
+.lithos-footer {
+  height: 24px;
+  background: $bg-secondary;
+  border-top: 1px solid $border-color;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  font-size: 11px;
+}
+
+.lithos-footer-left,
+.lithos-footer-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lithos-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: $text-secondary;
+  padding: 2px 6px;
+  border-radius: 3px;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: $bg-tertiary;
+  }
+}
+
+.lithos-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: $text-muted;
+}
+
+.status-online {
+  .lithos-status-dot {
+    background: $green;
+    box-shadow: 0 0 6px rgba($green, 0.5);
+  }
+}
+
+.status-offline {
+  .lithos-status-dot {
+    background: $red;
+    box-shadow: 0 0 6px rgba($red, 0.5);
+  }
+}
+
+.lithos-copyright {
+  color: $text-muted;
+}

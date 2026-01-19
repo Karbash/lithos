@@ -1,0 +1,48 @@
+<div class="lithos-layout">
+  <!-- Header -->
+  <header class="lithos-header">
+    <div class="lithos-header-left">
+      <img src="logo.svg" alt="Lithos" class="lithos-logo-icon" />
+      <span class="lithos-logo">{{ appTitle }}</span>
+    </div>
+    <div class="lithos-header-center">
+      <nav class="lithos-nav">
+        <button class="lithos-nav-item">File</button>
+        <button class="lithos-nav-item">Edit</button>
+        <button class="lithos-nav-item">View</button>
+        <button class="lithos-nav-item">Help</button>
+      </nav>
+    </div>
+    <div class="lithos-header-right">
+      @if (canInstall()) {
+        <button class="lithos-nav-item" (click)="installApp()">Instalar</button>
+      }
+      <span class="lithos-version">{{ appVersion }}</span>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="lithos-main">
+    <div class="lithos-watermark">
+      <img src="logo.svg" alt="" class="lithos-watermark-logo" />
+    </div>
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Footer -->
+  <footer class="lithos-footer">
+    <div class="lithos-footer-left">
+      <span class="lithos-status" [class]="connectivityStatus().colorClass">
+        <span class="lithos-status-dot"></span>
+        {{ connectivityStatus().text }}
+      </span>
+      <span class="lithos-status" [class]="cacheStatus().colorClass">
+        <span class="lithos-status-dot"></span>
+        {{ cacheStatus().text }}
+      </span>
+    </div>
+    <div class="lithos-footer-right">
+      <span class="lithos-copyright">{{ copyrightText }}</span>
+    </div>
+  </footer>
+</div>

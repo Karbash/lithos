@@ -1,0 +1,46 @@
+<div class="lithos-login">
+  <div class="lithos-login-card">
+    <div class="lithos-login-header">
+      <h1>Entrar</h1>
+      <p>Entre com suas credenciais</p>
+    </div>
+
+    <form [formGroup]="loginForm" class="lithos-login-form" (ngSubmit)="onSubmit()">
+      <div class="lithos-field">
+        <label for="email">E-mail</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          [value]="email()"
+          (input)="updateEmail($any($event.target).value)"
+          placeholder="seu@email.com"
+          autocomplete="email"
+        />
+      </div>
+
+      <div class="lithos-field">
+        <label for="password">Senha</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          [value]="password()"
+          (input)="updatePassword($any($event.target).value)"
+          placeholder="Digite sua senha"
+          autocomplete="current-password"
+        />
+      </div>
+
+      @if (authError()) {
+        <div class="lithos-error">{{ authError() }}</div>
+      }
+
+      <button type="submit" [disabled]="loginForm.invalid" class="lithos-btn">Entrar</button>
+    </form>
+
+    <div class="lithos-login-footer">
+      <a href="#">Esqueceu a senha?</a>
+    </div>
+  </div>
+</div>

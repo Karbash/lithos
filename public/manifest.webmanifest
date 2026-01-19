@@ -1,0 +1,18 @@
+{
+  "name": "Lithos",
+  "short_name": "Lithos",
+  "description": "Lithos - Sistema de Gerenciamento",
+  "display": "standalone",
+  "theme_color": "#0e1116",
+  "background_color": "#0e1116",
+  "scope": "./",
+  "start_url": "./",
+  "icons": [
+    {
+      "src": "logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
