@@ -166,3 +166,33 @@
 .lithos-copyright {
   color: $text-muted;
 }
+
+// Responsividade mobile
+@media (max-width: 480px) {
+  .lithos-layout {
+    font-size: 14px;
+  }
+
+  .lithos-header {
+    height: 44px;
+    padding: 0 16px;
+  }
+
+  .lithos-logo {
+    font-size: 15px;
+  }
+
+  .lithos-nav-item {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+
+  .lithos-footer {
+    height: 28px;
+    font-size: 12px;
+  }
+
+  .lithos-status {
+    font-size: 12px;
+  }
+}

@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+
+// Base font size responsiva para mobile
+@media (max-width: 480px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 360px) {
+  html {
+    font-size: 14px;
+  }
+}
