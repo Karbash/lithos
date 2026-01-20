@@ -35,16 +35,9 @@ export class LoginComponent {
     const password = this.loginForm.value.password ?? '';
 
     this.authService.login({ email, password }).subscribe({
-      next: (response) => {
-        this.authService.getCurrentUser(response.token).subscribe({
-          next: () => {
-            this.router.navigate(['/dashboard']);
-          },
-          error: () => {
-            this.authError.set('Usuário não encontrado');
-            this.loading.set(false);
-          },
-        });
+      next: () => {
+        this.loading.set(false);
+        this.router.navigate(['/dashboard']);
       },
       error: (err) => {
         this.authError.set(err.message || 'Credenciais inválidas');

@@ -203,13 +203,11 @@ export class AuthService {
     this.clearStorage();
   }
 
-  getCurrentUser(token: string): Observable<User> {
-    for (const user of MOCK_USERS) {
-      if (user.token === token) {
-        return of(user);
-      }
-    }
-    return throwError(() => new Error('Usuário não encontrado'));
+  /**
+   * Retorna o tenantId do usuário logado
+   */
+  getTenantId(): string {
+    return this.user()?.tenantId ?? '';
   }
 
   /**

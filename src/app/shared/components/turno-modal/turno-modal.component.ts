@@ -12,6 +12,7 @@ import { RegistroTurno } from '../../../features/fornos/registros.service';
 export class TurnoModalComponent implements OnInit {
   fornoNome = input.required<string>();
   fornoId = input.required<string>();
+  tenantId = input.required<string>();
   registroAberto = input<RegistroTurno | null>(null);
 
   closeModal = output<void>();
@@ -56,7 +57,7 @@ export class TurnoModalComponent implements OnInit {
       temperaturaInicio: this.formIniciar.value.temperaturaInicio!,
       observacoes: this.formIniciar.value.observacoes || undefined,
       status: 'aberto',
-      tenantId: '1',
+      tenantId: this.tenantId(),
     };
 
     this.iniciarTurno.emit(registro);

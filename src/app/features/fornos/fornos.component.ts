@@ -9,6 +9,7 @@ import { FurnaceInspectorComponent } from '../../shared/components/furnace-inspe
 import { TurnoModalComponent } from '../../shared/components/turno-modal/turno-modal.component';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { PermissionsService } from '../../core/services/permissions';
+import { AuthService } from '../../core/services/auth';
 
 @Component({
   selector: 'app-fornos',
@@ -26,6 +27,7 @@ export class FornosComponent implements OnInit {
   private fornosService = inject(FornosService);
   private registrosService = inject(RegistrosService);
   private permissionsService = inject(PermissionsService);
+  authService = inject(AuthService);
 
   // Permissões do usuário para este módulo
   permissions = computed(() => this.permissionsService.getModulePermissions('fornos'));
@@ -217,7 +219,7 @@ export class FornosComponent implements OnInit {
       desvioPadrao: 0,
       mistura: [],
       alertas: [],
-      tenantId: '1',
+      tenantId: this.authService.getTenantId(),
     };
 
     if (this.editingId()) {

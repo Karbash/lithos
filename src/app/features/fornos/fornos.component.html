@@ -113,6 +113,7 @@
   <app-turno-modal
     [fornoNome]="selectedFurnace()!.nome"
     [fornoId]="selectedFurnace()!.id"
+    [tenantId]="authService.getTenantId()"
     [registroAberto]="registroAberto()"
     (closeModal)="closeTurnoModal()"
     (iniciarTurno)="onIniciarTurno($event)"
