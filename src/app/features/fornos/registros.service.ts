@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface RegistroTurno {
   id?: string;
@@ -23,7 +24,7 @@ export interface RegistroTurno {
 })
 export class RegistrosService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:3000';
+  private apiUrl = environment.apiUrl;
 
   getByForno(fornoId: string): Observable<RegistroTurno[]> {
     return this.http.get<RegistroTurno[]>(`${this.apiUrl}/registros?fornoId=${fornoId}&_sort=data,horaInicio&_order=desc,desc`);

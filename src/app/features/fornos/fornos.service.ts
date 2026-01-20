@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Furnace } from '../../shared/components/furnace-card/furnace-card.component';
+import { environment } from '../../../environments/environment';
 
 export interface FurnaceCreate {
   nome: string;
@@ -18,7 +19,7 @@ export interface FurnaceCreate {
 })
 export class FornosService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:3000';
+  private apiUrl = environment.apiUrl;
 
   getAll(): Observable<Furnace[]> {
     return this.http.get<Furnace[]>(`${this.apiUrl}/fornos`);
