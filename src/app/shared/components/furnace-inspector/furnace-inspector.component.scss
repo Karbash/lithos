@@ -3,7 +3,7 @@
 .inspector-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.75);
   display: flex;
   justify-content: flex-end;
   z-index: 1000;
@@ -11,7 +11,7 @@
 
 .inspector {
   width: 100%;
-  max-width: 420px;
+  max-width: 480px;
   height: 100%;
   background: $bg-primary;
   border-left: 1px solid $border-color;
@@ -23,46 +23,47 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 16px 20px;
+  padding: 20px 24px;
   border-bottom: 1px solid $border-color;
   background: $bg-secondary;
 }
 
 .inspector-title h2 {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   font-weight: 600;
   color: $text-primary;
 }
 
 .inspector-subtitle {
-  font-size: 0.75rem;
+  font-size: 0.95rem;
   color: $text-muted;
+  margin-top: 4px;
 }
 
 .inspector-header-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .inspector-status {
-  font-size: 0.65rem;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600;
   text-transform: uppercase;
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 8px 14px;
+  border-radius: 6px;
 
   &.ativo {
-    background: rgba($green, 0.15);
-    color: $green;
+    background: rgba($green, 0.2);
+    color: #4ade80;
   }
   &.manutencao {
-    background: rgba($yellow, 0.15);
-    color: $yellow;
+    background: rgba($yellow, 0.2);
+    color: #fbbf24;
   }
   &.inativo {
-    background: rgba($text-muted, 0.15);
+    background: rgba($text-muted, 0.2);
     color: $text-muted;
   }
 }
@@ -71,31 +72,40 @@
   background: transparent;
   border: none;
   color: $text-secondary;
-  font-size: 1.5rem;
+  font-size: 2rem;
   cursor: pointer;
   line-height: 1;
+  min-width: 48px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  touch-action: manipulation;
 
-  &:hover {
+  &:hover,
+  &:active {
     color: $text-primary;
+    background: $bg-tertiary;
   }
 }
 
 .inspector-content {
   flex: 1;
   overflow-y: auto;
-  padding: 16px 20px;
+  padding: 20px 24px;
 }
 
 .inspector-section {
-  margin-bottom: 20px;
+  margin-bottom: 28px;
 
   h3 {
-    font-size: 0.7rem;
+    font-size: 0.85rem;
     font-weight: 600;
     color: $text-muted;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin: 0 0 12px 0;
+    margin: 0 0 14px 0;
   }
 }
 
@@ -103,88 +113,92 @@
 .temp-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 8px;
+  gap: 10px;
 }
 
 .temp-main {
   grid-column: 1 / -1;
-  background: rgba($bg-input, 0.5);
-  border-radius: 8px;
-  padding: 16px;
+  background: rgba($bg-input, 0.6);
+  border-radius: 10px;
+  padding: 24px;
   text-align: center;
 }
 
 .temp-value {
   display: block;
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: 700;
   color: $accent;
+  line-height: 1;
 }
 
 .temp-label {
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   color: $text-muted;
   text-transform: uppercase;
+  margin-top: 8px;
 }
 
 .temp-stat {
-  background: rgba($bg-input, 0.5);
-  border-radius: 6px;
-  padding: 10px;
+  background: rgba($bg-input, 0.6);
+  border-radius: 8px;
+  padding: 14px;
   text-align: center;
 }
 
 .stat-value {
   display: block;
-  font-size: 0.9rem;
+  font-size: 1.15rem;
   font-weight: 600;
   color: $text-primary;
 }
 
 .stat-label {
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   color: $text-muted;
   text-transform: uppercase;
+  margin-top: 4px;
 }
 
 // History
 .history-section {
-  margin-top: 12px;
+  margin-top: 16px;
 }
 
 .history-label {
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   color: $text-muted;
   text-transform: uppercase;
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .history-chart {
   display: flex;
   align-items: flex-end;
-  gap: 2px;
-  height: 50px;
-  padding: 6px;
-  background: rgba($bg-input, 0.5);
-  border-radius: 6px;
+  gap: 3px;
+  height: 60px;
+  padding: 8px;
+  background: rgba($bg-input, 0.6);
+  border-radius: 8px;
 }
 
 .chart-bar {
   flex: 1;
   background: $accent;
-  border-radius: 2px 2px 0 0;
-  min-height: 2px;
-  opacity: 0.7;
+  border-radius: 3px 3px 0 0;
+  min-height: 3px;
+  opacity: 0.8;
+  transition: opacity 0.15s;
 
   &:hover {
     opacity: 1;
   }
   &.high {
-    background: $red;
+    background: #ff6b6b;
   }
   &.low {
-    background: $yellow;
+    background: #fbbf24;
   }
 }
 
@@ -192,128 +206,176 @@
 .metrics-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
+  gap: 10px;
 }
 
 .metric-card {
-  background: rgba($bg-input, 0.5);
-  border-radius: 6px;
-  padding: 10px;
+  background: rgba($bg-input, 0.6);
+  border-radius: 8px;
+  padding: 14px;
   text-align: center;
 }
 
 .metric-label {
   display: block;
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   color: $text-muted;
   text-transform: uppercase;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .metric-value {
-  font-size: 0.9rem;
+  font-size: 1.15rem;
   font-weight: 600;
   color: $text-primary;
 
   &.large {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
   }
   &.positive {
-    color: $green;
+    color: #4ade80;
   }
   &.negative {
-    color: $red;
+    color: #ff6b6b;
   }
 }
 
 // Laudo
 .laudo-card {
-  padding: 12px;
-  border-radius: 6px;
+  padding: 16px;
+  border-radius: 8px;
+  border: 2px solid transparent;
 
   &.aprovado {
     background: rgba($green, 0.1);
+    border-color: rgba($green, 0.3);
   }
   &.reprovado {
     background: rgba($red, 0.1);
+    border-color: rgba($red, 0.3);
   }
 }
 
 .laudo-header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 8px;
+  align-items: center;
+  margin-bottom: 12px;
 }
 
 .laudo-status {
-  font-weight: 600;
-  font-size: 0.85rem;
+  font-weight: 700;
+  font-size: 1rem;
 
   .aprovado & {
-    color: $green;
+    color: #4ade80;
   }
   .reprovado & {
-    color: $red;
+    color: #ff6b6b;
   }
 }
 
 .laudo-date {
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   color: $text-muted;
 }
 
 .laudo-detail {
   display: flex;
   justify-content: space-between;
-  padding-top: 8px;
+  padding-top: 12px;
   border-top: 1px solid rgba($border-color, 0.3);
 }
 
 .detail-label {
-  font-size: 0.7rem;
+  font-size: 0.85rem;
   color: $text-muted;
 }
 
 .detail-value {
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: $text-primary;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 // Alerts
 .alerts-list {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .alert-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 10px;
-  border-radius: 6px;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  border: 1px solid transparent;
 
   &.alert-info {
     background: rgba($accent, 0.1);
+    border-color: rgba($accent, 0.2);
   }
   &.alert-warning {
-    background: rgba($yellow, 0.1);
+    background: rgba($yellow, 0.12);
+    border-color: rgba($yellow, 0.3);
   }
   &.alert-critical {
-    background: rgba($red, 0.1);
+    background: rgba($red, 0.12);
+    border-color: rgba($red, 0.3);
+    animation: alert-pulse 2s infinite;
+  }
+}
+
+@keyframes alert-pulse {
+  0%,
+  100% {
+    background: rgba($red, 0.12);
+  }
+  50% {
+    background: rgba($red, 0.18);
   }
 }
 
 .alert-icon {
-  width: 20px;
-  height: 20px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+
+  .alert-info & {
+    background: rgba($accent, 0.25);
+    color: $accent;
+  }
+  .alert-warning & {
+    background: rgba($yellow, 0.25);
+    color: #fbbf24;
+  }
+  .alert-critical & {
+    background: rgba($red, 0.25);
+    color: #ff6b6b;
+  }
+}
+
+.alert-message {
+  flex: 1;
+  font-size: 0.95rem;
+  color: $text-primary;
+  line-height: 1.3;
+}
+
+.alert-severity {
+  font-size: 0.7rem;
   font-weight: 600;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 4px;
 
   .alert-info & {
     background: rgba($accent, 0.2);
@@ -321,73 +383,81 @@
   }
   .alert-warning & {
     background: rgba($yellow, 0.2);
-    color: $yellow;
+    color: #fbbf24;
   }
   .alert-critical & {
     background: rgba($red, 0.2);
-    color: $red;
+    color: #ff6b6b;
   }
-}
-
-.alert-message {
-  flex: 1;
-  font-size: 0.75rem;
-  color: $text-primary;
-}
-
-.alert-severity {
-  font-size: 0.55rem;
-  text-transform: uppercase;
-  color: $text-muted;
 }
 
 // Operation
 .operation-grid {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .operation-item {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
-  background: rgba($bg-input, 0.5);
-  border-radius: 6px;
+  align-items: center;
+  padding: 14px 16px;
+  background: rgba($bg-input, 0.6);
+  border-radius: 8px;
 }
 
 .operation-label {
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   color: $text-muted;
 }
 
 .operation-value {
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: $text-primary;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .btn-turno {
   width: 100%;
-  margin-top: 12px;
-  padding: 10px 16px;
+  margin-top: 16px;
+  padding: 16px 20px;
+  min-height: 56px;
   background: transparent;
-  border: 1px solid $accent;
+  border: 2px solid $accent;
   color: $accent;
-  font-size: 0.875rem;
-  font-weight: 500;
-  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
+  touch-action: manipulation;
 
-  &:hover {
-    background: rgba($accent, 0.1);
+  &:hover,
+  &:active {
+    background: rgba($accent, 0.15);
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .inspector {
     max-width: 100%;
+  }
+
+  .inspector-header {
+    padding: 16px 20px;
+  }
+
+  .inspector-title h2 {
+    font-size: 1.25rem;
+  }
+
+  .inspector-content {
+    padding: 16px 20px;
+  }
+
+  .temp-value {
+    font-size: 2.5rem;
   }
 
   .temp-grid {
@@ -396,5 +466,10 @@
 
   .temp-main {
     grid-column: 1 / -1;
+  }
+
+  .btn-turno {
+    min-height: 60px;
+    font-size: 1.15rem;
   }
 }
