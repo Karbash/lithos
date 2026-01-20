@@ -21,6 +21,16 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/dashboard/dashboard.component').then((m) => m.DashboardComponent),
       },
+      {
+        path: 'perfil',
+        loadComponent: () =>
+          import('./features/profile/profile.component').then((m) => m.ProfileComponent),
+      },
+      {
+        path: 'fornos',
+        loadComponent: () =>
+          import('./features/fornos/fornos.component').then((m) => m.FornosComponent),
+      },
     ],
   },
   {

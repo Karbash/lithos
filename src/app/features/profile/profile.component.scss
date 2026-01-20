@@ -1,0 +1,81 @@
+@use '../../styles/variables' as *;
+
+.profile {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2rem;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.profile-content {
+  width: 100%;
+  max-width: 500px;
+
+  h1 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $text-primary;
+    margin: 0 0 1.5rem 0;
+  }
+}
+
+.profile-card {
+  background-color: rgba($bg-secondary, 0.85);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba($border-color, 0.3);
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.profile-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: $accent;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profile-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  label {
+    font-size: 0.75rem;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  span {
+    font-size: 0.875rem;
+    color: $text-primary;
+  }
+}
+
+@media (max-width: 600px) {
+  .profile {
+    padding: 1rem;
+  }
+
+  .profile-content h1 {
+    font-size: 1.5rem;
+  }
+}

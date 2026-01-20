@@ -1,5 +1,12 @@
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
+# Windows devices (CRÍTICO)
+nul
+NUL
+con
+aux
+prn
+
 # Compiled output
 /dist
 /tmp

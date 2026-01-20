@@ -1,0 +1,70 @@
+<div
+  class="furnace-card"
+  [class.active]="furnace().status === 'ativo'"
+  [class.maintenance]="furnace().status === 'manutencao'"
+  [class.inactive]="furnace().status === 'inativo'"
+  [class.has-critical]="criticalAlerts() > 0"
+  (click)="onClick()">
+
+  <!-- Header -->
+  <div class="furnace-header">
+    <div class="furnace-title">
+      <h3>{{ furnace().nome }}</h3>
+      <span class="furnace-type">{{ furnace().tipo }} · {{ furnace().planta }}</span>
+    </div>
+    <div class="furnace-header-right">
+      @if (alertCount() > 0) {
+        <span class="alert-badge" [class.critical]="criticalAlerts() > 0">
+          {{ alertCount() }}
+        </span>
+      }
+      <span class="furnace-status">{{ getStatusLabel() }}</span>
+    </div>
+  </div>
+
+  <!-- Temperatura -->
+  <div class="furnace-temperature">
+    <app-temperature-gauge
+      [temperature]="furnace().temperaturaAtual"
+      [min]="0"
+      [max]="1500" />
+  </div>
+
+  <!-- Métricas principais -->
+  <div class="furnace-metrics">
+    <div class="metric">
+      <span class="metric-label">Rendimento</span>
+      <span class="metric-value">{{ furnace().rendimentoAtual }}%</span>
+    </div>
+    <div class="metric">
+      <span class="metric-label">Desvio</span>
+      <span class="metric-value" [class]="desvioClass()">
+        {{ furnace().desvioMeta > 0 ? '+' : '' }}{{ furnace().desvioMeta }}%
+      </span>
+    </div>
+    <div class="metric">
+      <span class="metric-label">Média</span>
+      <span class="metric-value">{{ furnace().mediaMovel }}°C</span>
+    </div>
+  </div>
+
+  <!-- Mistura compacta -->
+  @if (furnace().mistura && furnace().mistura!.length > 0) {
+    <div class="furnace-mixture-compact">
+      <app-mixture-bar [items]="furnace().mistura!" />
+    </div>
+  }
+
+  <!-- Footer -->
+  <div class="furnace-footer">
+    <div class="footer-left">
+      @if (furnace().operador) {
+        <span class="footer-operator">{{ furnace().operador }}</span>
+      }
+      @if (furnace().turnoAtual) {
+        <span class="footer-turno">Turno {{ furnace().turnoAtual }}</span>
+      }
+    </div>
+    <button class="btn-edit" (click)="onEdit($event)">Editar</button>
+  </div>
+</div>

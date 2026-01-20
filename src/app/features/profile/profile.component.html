@@ -1,0 +1,27 @@
+<div class="profile">
+  <div class="profile-content">
+    <h1>Perfil</h1>
+
+    @if (user()) {
+      <div class="profile-card">
+        <div class="profile-avatar">
+          {{ user()!.name.charAt(0) }}
+        </div>
+        <div class="profile-info">
+          <div class="profile-field">
+            <label>Nome</label>
+            <span>{{ user()!.name }}</span>
+          </div>
+          <div class="profile-field">
+            <label>Email</label>
+            <span>{{ user()!.email }}</span>
+          </div>
+          <div class="profile-field">
+            <label>Perfil</label>
+            <span>{{ user()!.role }}</span>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

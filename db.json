@@ -1,0 +1,427 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Administrador",
+      "email": "admin@email.com",
+      "password": "password",
+      "role": "admin"
+    }
+  ],
+  "insumos": [
+    {
+      "id": "1",
+      "nome": "Calcário",
+      "tipo": "ite",
+      "fornecedor": "Pedreira Sul",
+      "lote": "L2024-001",
+      "qualidade": 92.5,
+      "dataEntrada": "2024-01-15",
+      "tenantId": "1"
+    },
+    {
+      "id": "2",
+      "nome": "Argila",
+      "tipo": "ite",
+      "fornecedor": "Mineração Norte",
+      "lote": "L2024-002",
+      "qualidade": 88,
+      "dataEntrada": "2024-01-16",
+      "tenantId": "1"
+    }
+  ],
+  "fornos": [
+    {
+      "id": "1",
+      "nome": "Forno 01",
+      "planta": "Planta A",
+      "tipo": "Rotativo",
+      "capacidade": 500,
+      "status": "ativo",
+      "temperaturaAtual": 1248,
+      "temperaturaMeta": 1250,
+      "temperaturaHistorico": [
+        1245,
+        1252,
+        1248,
+        1255,
+        1240,
+        1238,
+        1250,
+        1248,
+        1252,
+        1245,
+        1248,
+        1250
+      ],
+      "rendimentoAtual": 89.5,
+      "rendimentoMeta": 90,
+      "desvioMeta": -0.5,
+      "operador": "João Silva",
+      "turnoAtual": "A",
+      "tempoOperacao": "6h 32min",
+      "mediaMovel": 1247,
+      "desvioPadrao": 5.2,
+      "mistura": [
+        {
+          "nome": "Calcário",
+          "percentual": 70,
+          "cor": "#3b82f6"
+        },
+        {
+          "nome": "Argila",
+          "percentual": 30,
+          "cor": "#22c55e"
+        }
+      ],
+      "ultimoLaudo": {
+        "data": "2024-01-15",
+        "aprovado": true,
+        "cao": 92.5
+      },
+      "alertas": [],
+      "tenantId": "1"
+    },
+    {
+      "id": "2",
+      "nome": "Forno 02",
+      "planta": "Planta A",
+      "tipo": "Vertical",
+      "capacidade": 300,
+      "status": "manutencao",
+      "temperaturaAtual": 0,
+      "temperaturaMeta": 1200,
+      "temperaturaHistorico": [
+        1180,
+        1195,
+        1150,
+        1120,
+        1080,
+        950,
+        800,
+        500,
+        200,
+        0,
+        0,
+        0
+      ],
+      "rendimentoAtual": 0,
+      "rendimentoMeta": 88,
+      "desvioMeta": -88,
+      "operador": null,
+      "turnoAtual": null,
+      "tempoOperacao": null,
+      "mediaMovel": 680,
+      "desvioPadrao": 420,
+      "mistura": [],
+      "ultimoLaudo": {
+        "data": "2024-01-14",
+        "aprovado": false,
+        "cao": 85.2
+      },
+      "alertas": [
+        {
+          "tipo": "manutencao",
+          "mensagem": "Manutenção preventiva programada",
+          "severidade": "info"
+        }
+      ],
+      "tenantId": "1"
+    },
+    {
+      "id": "3",
+      "nome": "Forno 03",
+      "planta": "Planta B",
+      "tipo": "Rotativo",
+      "capacidade": 450,
+      "status": "ativo",
+      "temperaturaAtual": 1320,
+      "temperaturaMeta": 1250,
+      "temperaturaHistorico": [
+        1260,
+        1275,
+        1290,
+        1305,
+        1310,
+        1315,
+        1318,
+        1320,
+        1322,
+        1318,
+        1320,
+        1320
+      ],
+      "rendimentoAtual": 92.3,
+      "rendimentoMeta": 90,
+      "desvioMeta": 2.3,
+      "operador": "Maria Santos",
+      "turnoAtual": "A",
+      "tempoOperacao": "4h 15min",
+      "mediaMovel": 1306,
+      "desvioPadrao": 18.5,
+      "mistura": [
+        {
+          "nome": "Calcário",
+          "percentual": 65,
+          "cor": "#3b82f6"
+        },
+        {
+          "nome": "Argila",
+          "percentual": 25,
+          "cor": "#22c55e"
+        },
+        {
+          "nome": "Silica",
+          "percentual": 10,
+          "cor": "#a855f7"
+        }
+      ],
+      "ultimoLaudo": {
+        "data": "2024-01-15",
+        "aprovado": true,
+        "cao": 94.1
+      },
+      "alertas": [
+        {
+          "tipo": "temperatura",
+          "mensagem": "Temperatura 70°C acima da meta",
+          "severidade": "warning"
+        },
+        {
+          "tipo": "temperatura",
+          "mensagem": "Tendência de alta nas últimas 6h",
+          "severidade": "info"
+        }
+      ],
+      "tenantId": "1"
+    },
+    {
+      "id": "4",
+      "nome": "Forno 04",
+      "planta": "Planta B",
+      "tipo": "Horizontal",
+      "capacidade": 600,
+      "status": "ativo",
+      "temperaturaAtual": 1150,
+      "temperaturaMeta": 1250,
+      "temperaturaHistorico": [
+        1240,
+        1235,
+        1220,
+        1210,
+        1200,
+        1190,
+        1180,
+        1170,
+        1160,
+        1155,
+        1152,
+        1150
+      ],
+      "rendimentoAtual": 82.1,
+      "rendimentoMeta": 90,
+      "desvioMeta": -7.9,
+      "operador": "Carlos Lima",
+      "turnoAtual": "B",
+      "tempoOperacao": "2h 45min",
+      "mediaMovel": 1193,
+      "desvioPadrao": 32.4,
+      "mistura": [
+        {
+          "nome": "Calcário",
+          "percentual": 75,
+          "cor": "#3b82f6"
+        },
+        {
+          "nome": "Argila",
+          "percentual": 25,
+          "cor": "#22c55e"
+        }
+      ],
+      "ultimoLaudo": {
+        "data": "2024-01-15",
+        "aprovado": false,
+        "cao": 88.3
+      },
+      "alertas": [
+        {
+          "tipo": "temperatura",
+          "mensagem": "Temperatura 100°C abaixo da meta",
+          "severidade": "critical"
+        },
+        {
+          "tipo": "rendimento",
+          "mensagem": "Rendimento 7.9% abaixo da meta",
+          "severidade": "critical"
+        },
+        {
+          "tipo": "qualidade",
+          "mensagem": "Último laudo reprovado",
+          "severidade": "warning"
+        }
+      ],
+      "tenantId": "1"
+    }
+  ],
+  "producao": [
+    {
+      "id": "1",
+      "fornoId": "1",
+      "data": "2024-01-15",
+      "turno": "A",
+      "quantidadeProduzida": 450,
+      "rendimento": 90,
+      "temperaturaMedia": 1245,
+      "tenantId": "1"
+    }
+  ],
+  "blending": [
+    {
+      "id": "1",
+      "nome": "Mistura Padrão",
+      "composicao": [
+        {
+          "insumoId": "1",
+          "percentual": 70
+        },
+        {
+          "insumoId": "2",
+          "percentual": 30
+        }
+      ],
+      "status": "ativo",
+      "tenantId": "1"
+    }
+  ],
+  "laboratorio": [
+    {
+      "id": "1",
+      "producaoId": "1",
+      "dataAnalise": "2024-01-15",
+      "cao": 92.5,
+      "ite": 3.2,
+      "ite2": 1.8,
+      "perda": 2.5,
+      "aprovado": true,
+      "tenantId": "1"
+    }
+  ],
+  "indicadores": [
+    {
+      "id": "1",
+      "tipo": "rendimento",
+      "periodo": "2024-01",
+      "valor": 89.5,
+      "meta": 90,
+      "tenantId": "1"
+    },
+    {
+      "id": "2",
+      "tipo": "qualidade",
+      "periodo": "2024-01",
+      "valor": 91.2,
+      "meta": 92,
+      "tenantId": "1"
+    }
+  ],
+  "custodia": [
+    {
+      "id": "1",
+      "insumoId": "1",
+      "etapa": "recebimento",
+      "data": "2024-01-15T08:00:00",
+      "responsavel": "João Silva",
+      "observacao": "Material conforme",
+      "tenantId": "1"
+    },
+    {
+      "id": "2",
+      "insumoId": "1",
+      "etapa": "armazenamento",
+      "data": "2024-01-15T09:30:00",
+      "responsavel": "Maria Santos",
+      "observacao": "Silo 03",
+      "tenantId": "1"
+    }
+  ],
+  "qualidade": [
+    {
+      "id": "1",
+      "tipo": "inspecao",
+      "referencia": "producao-1",
+      "data": "2024-01-15",
+      "status": "conforme",
+      "inspetor": "Carlos Lima",
+      "tenantId": "1"
+    }
+  ],
+  "config": [
+    {
+      "id": "1",
+      "chave": "temperatura_minima",
+      "valor": "1200",
+      "descricao": "Temperatura mínima do forno em °C",
+      "tenantId": "1"
+    },
+    {
+      "id": "2",
+      "chave": "janela_media_movel",
+      "valor": "7",
+      "descricao": "Dias para cálculo da média móvel",
+      "tenantId": "1"
+    }
+  ],
+  "tenants": [
+    {
+      "id": "1",
+      "nome": "Lithos Ind.",
+      "cnpj": "12.345.678/0001-90",
+      "plantas": [
+        "Planta A",
+        "Planta B"
+      ]
+    }
+  ],
+  "registros": [
+    {
+      "id": "1",
+      "fornoId": "1",
+      "data": "2024-01-15",
+      "turno": "A",
+      "operador": "João Silva",
+      "horaInicio": "06:00",
+      "horaFim": "14:00",
+      "temperaturaInicio": 1240,
+      "temperaturaFim": 1248,
+      "producao": 58.5,
+      "observacoes": "Turno sem intercorrências",
+      "status": "fechado",
+      "tenantId": "1"
+    },
+    {
+      "id": "2",
+      "fornoId": "3",
+      "data": "2024-01-15",
+      "turno": "A",
+      "operador": "Maria Santos",
+      "horaInicio": "06:00",
+      "temperaturaInicio": 1305,
+      "status": "fechado",
+      "tenantId": "1",
+      "horaFim": "22:20",
+      "temperaturaFim": 1360,
+      "producao": 2
+    },
+    {
+      "id": "3d62",
+      "fornoId": "3",
+      "data": "2026-01-20",
+      "turno": "A",
+      "operador": "Jordane Almeida",
+      "horaInicio": "22:21",
+      "temperaturaInicio": 1300,
+      "status": "aberto",
+      "tenantId": "1"
+    }
+  ]
+}

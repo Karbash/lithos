@@ -1,8 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -12,18 +11,14 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-  ) {}
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
   });
 
-  email = signal('');
-  password = signal('');
   authError = signal<string | null>(null);
 
   onSubmit(): void {
@@ -33,21 +28,16 @@ export class LoginComponent {
       return;
     }
 
-    this.authService.login({ email: this.email(), password: this.password() }).subscribe({
+    const email = this.loginForm.value.email ?? '';
+    const password = this.loginForm.value.password ?? '';
+
+    this.authService.login({ email, password }).subscribe({
       next: () => {
         this.router.navigate(['/dashboard']);
       },
-      error: (error: HttpErrorResponse) => {
-        this.authError.set(error.status === 401 ? 'Credenciais inválidas' : 'Erro ao fazer login');
+      error: () => {
+        this.authError.set('Credenciais inválidas');
       },
     });
-  }
-
-  updateEmail(value: string): void {
-    this.email.set(value);
-  }
-
-  updatePassword(value: string): void {
-    this.password.set(value);
   }
 }

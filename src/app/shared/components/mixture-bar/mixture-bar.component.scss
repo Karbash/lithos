@@ -1,0 +1,67 @@
+@use '../../../styles/variables' as *;
+
+.mixture {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mixture-label {
+  font-size: 0.7rem;
+  color: $text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mixture-bar {
+  display: flex;
+  height: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: $bg-input;
+}
+
+.mixture-segment {
+  height: 100%;
+  transition: width 0.3s ease;
+
+  &:first-child {
+    border-radius: 6px 0 0 6px;
+  }
+
+  &:last-child {
+    border-radius: 0 6px 6px 0;
+  }
+
+  &:only-child {
+    border-radius: 6px;
+  }
+}
+
+.mixture-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+}
+
+.legend-color {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.legend-name {
+  color: $text-secondary;
+}
+
+.legend-value {
+  color: $text-primary;
+  font-weight: 500;
+}

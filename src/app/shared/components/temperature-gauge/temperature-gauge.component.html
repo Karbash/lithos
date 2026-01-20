@@ -1,0 +1,17 @@
+<div class="gauge">
+  <div class="gauge-header">
+    <span class="gauge-label">Temperatura</span>
+    <span class="gauge-value" [style.color]="color()">{{ temperature() }}°C</span>
+  </div>
+  <div class="gauge-track">
+    <div
+      class="gauge-fill"
+      [style.width.%]="percentage()"
+      [style.background-color]="color()">
+    </div>
+  </div>
+  <div class="gauge-range">
+    <span>{{ min() }}</span>
+    <span>{{ max() }}°C</span>
+  </div>
+</div>

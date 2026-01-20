@@ -1,65 +1,109 @@
-import { Component } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../core/services/auth';
-
-interface Card {
-  id: string;
-  color: string;
-  title: string;
-  version: string;
-  description: string;
-  active: boolean;
-}
+import {
+  ModuleCardComponent,
+  ModuleCard,
+} from '../../shared/components/module-card/module-card.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [],
+  imports: [ModuleCardComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent {
-  selectedCard: string | null = null;
+  private router = inject(Router);
 
-  cards: Card[] = [
+  selectedCard = signal<string | null>(null);
+
+  modules: ModuleCard[] = [
     {
-      id: 'inventory',
+      id: 'insumos',
+      icon: 'ite',
       color: '#3b82f6',
-      title: 'Gestão de Estoque',
-      version: 'v1.0.0',
-      description:
-        'Controle completo de inventário, entradas e saídas de produtos com relatórios detalhados.',
+      title: 'Insumos',
+      description: 'Cadastro e controle de qualidade de matérias-primas.',
       active: true,
     },
     {
-      id: 'sales',
+      id: 'fornos',
+      icon: 'sta',
+      color: '#f97316',
+      title: 'Fornos',
+      description: 'Gestão e monitoramento de fornos por planta.',
+      active: true,
+    },
+    {
+      id: 'producao',
+      icon: 'pro',
       color: '#22c55e',
-      title: 'Vendas e Pedidos',
-      version: 'v1.0.0',
-      description: 'Gerencie vendas, pedidos e acompanhe o desempenho comercial em tempo real.',
+      title: 'Produção',
+      description: 'Controle de produção, rendimento e variação térmica.',
       active: true,
     },
     {
-      id: 'reports',
+      id: 'blending',
+      icon: 'mix',
       color: '#a855f7',
-      title: 'Relatórios e Analytics',
-      version: 'v1.0.0',
-      description: 'Dashboards interativos e relatórios personalizados para tomada de decisão.',
+      title: 'Blending',
+      description: 'Motor de mistura automática e sugestões de composição.',
+      active: true,
+    },
+    {
+      id: 'laboratorio',
+      icon: 'lab',
+      color: '#06b6d4',
+      title: 'Laboratório',
+      description: 'Laudos laboratoriais e recalibração de coeficientes.',
+      active: true,
+    },
+    {
+      id: 'indicadores',
+      icon: 'kpi',
+      color: '#eab308',
+      title: 'Indicadores',
+      description: 'KPIs, estatísticas e análise de desvios.',
+      active: true,
+    },
+    {
+      id: 'custodia',
+      icon: 'coc',
+      color: '#ec4899',
+      title: 'Cadeia de Custódia',
+      description: 'Rastreabilidade completa do material desde a origem.',
+      active: true,
+    },
+    {
+      id: 'qualidade',
+      icon: 'qc',
+      color: '#14b8a6',
+      title: 'Controle de Qualidade',
+      description: 'Inspeções, não conformidades e ações corretivas.',
+      active: true,
+    },
+    {
+      id: 'config',
+      icon: 'cfg',
+      color: '#64748b',
+      title: 'Configurações',
+      description: 'Parâmetros do sistema e regras de decisão.',
       active: false,
     },
   ];
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-  ) {}
+  private routes: Record<string, string> = {
+    fornos: '/fornos',
+  };
 
-  selectCard(id: string): void {
-    this.selectedCard = this.selectedCard === id ? null : id;
-  }
+  onCardClick(id: string): void {
+    const module = this.modules.find((m) => m.id === id);
+    if (!module?.active) return;
 
-  logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+    if (this.routes[id]) {
+      this.router.navigate([this.routes[id]]);
+    } else {
+      this.selectedCard.set(this.selectedCard() === id ? null : id);
+    }
   }
 }

@@ -1,0 +1,139 @@
+<div class="fornos">
+  <div class="fornos-content">
+    <div class="fornos-header">
+      <div>
+        <h1>Fornos</h1>
+        <p>Monitoramento e gestão de fornos</p>
+      </div>
+      <button class="btn-primary" (click)="openModal()">Novo Forno</button>
+    </div>
+
+    <!-- Resumo -->
+    @if (!loading() && fornos().length > 0) {
+      <div class="fornos-summary">
+        <div class="summary-card">
+          <span class="summary-value">{{ totalFornos }}</span>
+          <span class="summary-label">Total</span>
+        </div>
+        <div class="summary-card active">
+          <span class="summary-value">{{ fornosAtivos }}</span>
+          <span class="summary-label">Ativos</span>
+        </div>
+        <div class="summary-card" [class.critical]="alertasCriticos > 0">
+          <span class="summary-value">{{ alertasCriticos }}</span>
+          <span class="summary-label">Alertas Críticos</span>
+        </div>
+      </div>
+    }
+
+    @if (loading()) {
+      <div class="loading">Carregando...</div>
+    } @else if (fornos().length === 0) {
+      <div class="empty">
+        <p>Nenhum forno cadastrado</p>
+        <button class="btn-primary" (click)="openModal()">Cadastrar Forno</button>
+      </div>
+    } @else {
+      <div class="fornos-grid">
+        @for (forno of fornos(); track forno.id) {
+          <app-furnace-card
+            [furnace]="forno"
+            (cardClick)="onCardClick($event)"
+            (editClick)="onEditClick($event)" />
+        }
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Inspector -->
+@if (selectedFurnace()) {
+  <app-furnace-inspector
+    [furnace]="selectedFurnace()!"
+    [registroAberto]="registroAberto()"
+    (closeInspector)="closeInspector()"
+    (registrarTurno)="openTurnoModal()" />
+}
+
+<!-- Modal de Turno -->
+@if (showTurnoModal() && selectedFurnace()) {
+  <app-turno-modal
+    [fornoNome]="selectedFurnace()!.nome"
+    [fornoId]="selectedFurnace()!.id"
+    [registroAberto]="registroAberto()"
+    (closeModal)="closeTurnoModal()"
+    (iniciarTurno)="onIniciarTurno($event)"
+    (finalizarTurno)="onFinalizarTurno($event)" />
+}
+
+<!-- Modal de Edição -->
+@if (showModal()) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ editingId() ? 'Editar Forno' : 'Novo Forno' }}</h2>
+        <button class="btn-close" (click)="closeModal()">×</button>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" formControlName="nome" placeholder="Forno 01" />
+          </div>
+
+          <div class="form-field">
+            <label for="planta">Planta</label>
+            <input type="text" id="planta" formControlName="planta" placeholder="Planta A" />
+          </div>
+
+          <div class="form-field">
+            <label for="tipo">Tipo</label>
+            <select id="tipo" formControlName="tipo">
+              <option value="">Selecione</option>
+              <option value="Rotativo">Rotativo</option>
+              <option value="Vertical">Vertical</option>
+              <option value="Horizontal">Horizontal</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="capacidade">Capacidade (ton/dia)</label>
+            <input type="number" id="capacidade" formControlName="capacidade" />
+          </div>
+
+          <div class="form-field">
+            <label for="status">Status</label>
+            <select id="status" formControlName="status">
+              <option value="ativo">Ativo</option>
+              <option value="inativo">Inativo</option>
+              <option value="manutencao">Manutenção</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="temperatura">Temperatura Atual (°C)</label>
+            <input type="number" id="temperatura" formControlName="temperaturaAtual" />
+          </div>
+
+          <div class="form-field">
+            <label for="temperaturaMeta">Temperatura Meta (°C)</label>
+            <input type="number" id="temperaturaMeta" formControlName="temperaturaMeta" />
+          </div>
+
+          <div class="form-field">
+            <label for="rendimentoMeta">Rendimento Meta (%)</label>
+            <input type="number" id="rendimentoMeta" formControlName="rendimentoMeta" />
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" (click)="closeModal()">Cancelar</button>
+          <button type="submit" class="btn-primary" [disabled]="form.invalid">
+            {{ editingId() ? 'Salvar' : 'Cadastrar' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

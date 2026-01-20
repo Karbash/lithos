@@ -1,21 +1,55 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable, signal } from '@angular/core';
+import { Observable, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+}
+
+interface UserResponse {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  login(payload: { email: string; password: string }): Observable<{ token: string }> {
-    if (payload.email === 'admin@email.com' && payload.password === 'password') {
-      return of({ token: 'admin-token' });
-    }
-    return throwError(
-      () => new HttpErrorResponse({ status: 401, statusText: 'Invalid credentials' }),
-    );
+  private http = inject(HttpClient);
+  private apiUrl = 'http://localhost:3000';
+
+  user = signal<User | null>(null);
+
+  login(payload: { email: string; password: string }): Observable<User> {
+    return this.http
+      .get<UserResponse[]>(`${this.apiUrl}/users`, {
+        params: { email: payload.email, password: payload.password },
+      })
+      .pipe(
+        map((users) => {
+          if (users.length === 0) {
+            throw new Error('Invalid credentials');
+          }
+          const { password, ...user } = users[0];
+          this.user.set(user);
+          return user;
+        }),
+        catchError(() => throwError(() => new Error('Invalid credentials'))),
+      );
   }
 
-  logout() {
-    // Implement logout logic here
+  logout(): void {
+    this.user.set(null);
+  }
+
+  isAuthenticated(): boolean {
+    return this.user() !== null;
   }
 }

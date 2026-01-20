@@ -1,198 +1,310 @@
-@use '../../styles/variables' as *;
+/* Main Layout Component - VS Code Style */
 
 .lithos-layout {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  background: $bg-primary;
-  color: $text-primary;
-  font-family:
-    'Inter',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    sans-serif;
-  font-size: 13px;
-  overflow: hidden;
-  position: fixed;
-  inset: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #1e1e1e;
+    color: #cccccc;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow: hidden;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: none;
+    width: 100vw;
 }
 
 .lithos-header {
-  height: 38px;
-  background: $bg-secondary;
-  border-bottom: 1px solid $border-color;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-  user-select: none;
+    height: 30px !important;
+    background-color: #323233 !important;
+    border-bottom: 1px solid #3e3e42 !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 1rem !important;
+    user-select: none !important;
+    min-width: 0 !important;
 }
 
-.lithos-header-left,
-.lithos-header-right {
-  display: flex;
-  align-items: center;
-  min-width: 120px;
+.lithos-header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
 }
 
-.lithos-header-right {
-  justify-content: flex-end;
+.lithos-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: #cccccc;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 3px;
+    transition: background-color 0.1s ease;
+}
+
+.lithos-brand:hover {
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 .lithos-logo-icon {
-  width: 18px;
-  height: 18px;
-  margin-right: 6px;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
 }
 
 .lithos-logo {
-  font-weight: 600;
-  font-size: 13px;
-  color: $text-primary;
-  letter-spacing: -0.2px;
+    color: #cccccc;
+    white-space: nowrap;
 }
 
-.lithos-version {
-  font-size: 11px;
-  color: $text-muted;
-  font-weight: 500;
+.lithos-header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+    flex-shrink: 0;
 }
 
-.lithos-header-center {
-  flex: 1;
-  display: flex;
-  justify-content: center;
+.user-menu {
+    position: relative;
 }
 
-.lithos-nav {
-  display: flex;
-  gap: 2px;
+.user-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    color: #cccccc;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    transition: background-color 0.1s ease;
 }
 
-.lithos-nav-item {
-  background: transparent;
-  border: none;
-  color: $text-secondary;
-  font-size: 12px;
-  padding: 4px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.15s ease;
+.user-button:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
 
-  &:hover {
-    background: $bg-tertiary;
-    color: $text-primary;
-  }
+.user-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #58a6ff, #79b8ff);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.user-name {
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.user-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #252526;
+    border: 1px solid #3e3e42;
+    border-radius: 4px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    min-width: 120px;
+    z-index: 1000;
+    margin-top: 4px;
+}
+
+.dropdown-item {
+    width: 100%;
+    background: none;
+    border: none;
+    color: #cccccc;
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #3e3e42;
+}
+
+.dropdown-item:first-child {
+    border-radius: 3px 3px 0 0;
+}
+
+.dropdown-item:last-child {
+    border-radius: 0 0 3px 3px;
 }
 
 .lithos-main {
-  flex: 1;
-  overflow: hidden;
-  background: $bg-primary;
-  position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+    position: relative;
 }
 
 .lithos-watermark {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 1;
 }
 
 .lithos-watermark-logo {
-  width: 300px;
-  height: 300px;
-  opacity: 0.08;
-  filter: grayscale(100%);
+    width: 300px;
+    height: auto;
+    filter: grayscale(100%);
+}
+
+:host ::ng-deep router-outlet+* {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
 }
 
 .lithos-footer {
-  height: 24px;
-  background: $bg-secondary;
-  border-top: 1px solid $border-color;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-  font-size: 11px;
+    height: 40px !important;
+    background-color: #1e1e1e !important;
+    border-top: 1px solid #3c3c3c !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 0 1.5rem !important;
+    font-size: 14px !important;
+    color: #999999 !important;
+    min-width: 0 !important;
 }
 
-.lithos-footer-left,
-.lithos-footer-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.lithos-status-left,
+.lithos-status-center,
+.lithos-status-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: nowrap;
 }
 
-.lithos-status {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: $text-secondary;
-  padding: 2px 6px;
-  border-radius: 3px;
-  transition: background 0.15s ease;
+.lithos-status-center {
+    flex: 1;
+    justify-content: center;
+}
 
-  &:hover {
-    background: $bg-tertiary;
-  }
+.lithos-status-right {
+    justify-content: flex-end;
+}
+
+.lithos-status-item {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 1px 4px;
+    border-radius: 3px;
+    transition: background-color 0.1s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.lithos-status-item:hover {
+    background-color: #3e3e42;
 }
 
 .lithos-status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: $text-muted;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: inline-block;
+    margin-right: 4px;
 }
 
-.status-online {
-  .lithos-status-dot {
-    background: $green;
-    box-shadow: 0 0 6px rgba($green, 0.5);
-  }
+.status-green {
+    background-color: #4ade80;
+    /* Verde */
 }
 
-.status-offline {
-  .lithos-status-dot {
-    background: $red;
-    box-shadow: 0 0 6px rgba($red, 0.5);
-  }
+.status-red {
+    background-color: #f87171;
+    /* Vermelho */
 }
 
-.lithos-copyright {
-  color: $text-muted;
+.lithos-status-text {
+    font-size: 10px;
+    color: #999999;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-// Responsividade mobile
-@media (max-width: 480px) {
-  .lithos-layout {
-    font-size: 14px;
-  }
+/* Responsive */
+@media (max-width: 768px) {
+    .vscode-header {
+        height: 28px;
+        padding: 0 0.5rem;
+    }
 
-  .lithos-header {
-    height: 44px;
-    padding: 0 16px;
-  }
+    .vscode-menu {
+        display: none;
+    }
 
-  .lithos-logo {
-    font-size: 15px;
-  }
+    .vscode-content {
+        padding: 0.5rem;
+    }
 
-  .lithos-nav-item {
-    font-size: 14px;
-    padding: 6px 12px;
-  }
+    .lithos-footer {
+        height: 30px;
+        padding: 0 1rem;
+        font-size: 10px;
+        border-top: 1px solid #3c3c3c;
+    }
 
-  .lithos-footer {
-    height: 28px;
-    font-size: 12px;
-  }
+    .lithos-status-left,
+    .lithos-status-right {
+        gap: 0.25rem;
+    }
 
-  .lithos-status {
-    font-size: 12px;
-  }
+    /* Hide some status items on mobile */
+    .lithos-status-left .lithos-status-item:nth-child(3),
+    .lithos-status-right .lithos-status-item:nth-child(n+2) {
+        display: none;
+    }
+}
+
+/* Prevent horizontal overflow and remove all borders */
+* {
+    box-sizing: border-box;
+}
+
+/* Ensure proper layout for direct children only */
+.lithos-layout>* {
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+/* Ensure full screen coverage */
+.lithos-layout {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
 }

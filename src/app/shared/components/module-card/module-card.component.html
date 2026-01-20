@@ -1,0 +1,18 @@
+<div
+  class="module-card"
+  [class.selected]="selected()"
+  [class.inactive]="!card().active"
+  (click)="onClick()">
+  <div class="module-card-icon" [style.background-color]="card().color">
+    <span class="icon">{{ card().icon }}</span>
+  </div>
+  <div class="module-card-content">
+    <div class="module-card-header">
+      <h3>{{ card().title }}</h3>
+      <span class="module-card-status" [class.active]="card().active">
+        {{ card().active ? 'Ativo' : 'Inativo' }}
+      </span>
+    </div>
+    <p class="module-card-description">{{ card().description }}</p>
+  </div>
+</div>

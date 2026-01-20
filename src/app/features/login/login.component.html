@@ -12,8 +12,6 @@
           type="email"
           id="email"
           formControlName="email"
-          [value]="email()"
-          (input)="updateEmail($any($event.target).value)"
           placeholder="seu@email.com"
           autocomplete="email"
         />
@@ -25,8 +23,6 @@
           type="password"
           id="password"
           formControlName="password"
-          [value]="password()"
-          (input)="updatePassword($any($event.target).value)"
           placeholder="Digite sua senha"
           autocomplete="current-password"
         />

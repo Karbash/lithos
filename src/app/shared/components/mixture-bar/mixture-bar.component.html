@@ -1,0 +1,22 @@
+<div class="mixture">
+  <div class="mixture-label">Mistura Atual</div>
+  <div class="mixture-bar">
+    @for (item of items(); track item.nome) {
+      <div
+        class="mixture-segment"
+        [style.width.%]="item.percentual"
+        [style.background-color]="item.cor"
+        [title]="item.nome + ': ' + item.percentual + '%'">
+      </div>
+    }
+  </div>
+  <div class="mixture-legend">
+    @for (item of items(); track item.nome) {
+      <div class="legend-item">
+        <span class="legend-color" [style.background-color]="item.cor"></span>
+        <span class="legend-name">{{ item.nome }}</span>
+        <span class="legend-value">{{ item.percentual }}%</span>
+      </div>
+    }
+  </div>
+</div>

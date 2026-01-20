@@ -1,32 +1,15 @@
-<div class="lithos-dashboard">
-  <div class="lithos-dashboard-content">
+<div class="dashboard">
+  <div class="dashboard-content">
     <h1>Dashboard</h1>
     <p>Selecione um módulo para começar</p>
 
-    <div class="lithos-cards">
-      @for (card of cards; track card.id) {
-        <div
-          class="lithos-card"
-          [class.selected]="selectedCard === card.id"
-          [class.inactive]="!card.active"
-          (click)="selectCard(card.id)">
-          <div class="lithos-card-icon" [style.background-color]="card.color">
-            <img src="logo.svg" alt="Logo" class="card-logo">
-          </div>
-          <div class="lithos-card-content">
-            <div class="lithos-card-header">
-              <h3>{{ card.title }}</h3>
-              <span class="lithos-card-version">{{ card.version }}</span>
-              <span class="lithos-card-status" [class.active]="card.active">
-                {{ card.active ? 'Ativo' : 'Inativo' }}
-              </span>
-            </div>
-            <p class="lithos-card-description">{{ card.description }}</p>
-          </div>
-        </div>
+    <div class="modules-grid">
+      @for (module of modules; track module.id) {
+        <app-module-card
+          [card]="module"
+          [selected]="selectedCard() === module.id"
+          (cardClick)="onCardClick($event)" />
       }
     </div>
-
-    <button class="lithos-btn" (click)="logout()">Sair</button>
   </div>
 </div>

@@ -1,0 +1,159 @@
+<div class="inspector-overlay" (click)="onOverlayClick($event)">
+  <div class="inspector">
+    <!-- Header -->
+    <div class="inspector-header">
+      <div class="inspector-title">
+        <h2>{{ furnace().nome }}</h2>
+        <span class="inspector-subtitle">{{ furnace().tipo }} · {{ furnace().planta }}</span>
+      </div>
+      <div class="inspector-header-right">
+        <span class="inspector-status" [class]="furnace().status">
+          {{ getStatusLabel() }}
+        </span>
+        <button class="btn-close" (click)="onClose()">×</button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="inspector-content">
+      <!-- Seção: Temperatura -->
+      <section class="inspector-section">
+        <h3>Temperatura</h3>
+        <div class="temp-grid">
+          <div class="temp-main">
+            <span class="temp-value">{{ furnace().temperaturaAtual }}°C</span>
+            <span class="temp-label">Atual</span>
+          </div>
+          <div class="temp-stat">
+            <span class="stat-value">{{ furnace().temperaturaMeta }}°C</span>
+            <span class="stat-label">Meta</span>
+          </div>
+          <div class="temp-stat">
+            <span class="stat-value">{{ furnace().mediaMovel }}°C</span>
+            <span class="stat-label">Média Móvel</span>
+          </div>
+          <div class="temp-stat">
+            <span class="stat-value">σ {{ furnace().desvioPadrao }}°C</span>
+            <span class="stat-label">Desvio Padrão</span>
+          </div>
+        </div>
+
+        <!-- Histórico -->
+        @if (furnace().temperaturaHistorico && furnace().temperaturaHistorico.length > 0) {
+          <div class="history-section">
+            <span class="history-label">Histórico (24h)</span>
+            <div class="history-chart">
+              @for (temp of furnace().temperaturaHistorico; track $index) {
+                <div
+                  class="chart-bar"
+                  [style.height.%]="(temp / 1500) * 100"
+                  [class.high]="temp > furnace().temperaturaMeta + 50"
+                  [class.low]="temp < furnace().temperaturaMeta - 50"
+                  [title]="temp + '°C'">
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </section>
+
+      <!-- Seção: Rendimento -->
+      <section class="inspector-section">
+        <h3>Rendimento</h3>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <span class="metric-label">Atual</span>
+            <span class="metric-value large">{{ furnace().rendimentoAtual }}%</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Meta</span>
+            <span class="metric-value">{{ furnace().rendimentoMeta }}%</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Desvio</span>
+            <span class="metric-value"
+              [class.positive]="furnace().desvioMeta > 0"
+              [class.negative]="furnace().desvioMeta < -5">
+              {{ furnace().desvioMeta > 0 ? '+' : '' }}{{ furnace().desvioMeta }}%
+            </span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Capacidade</span>
+            <span class="metric-value">{{ furnace().capacidade }} ton/dia</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Seção: Mistura -->
+      @if (furnace().mistura && furnace().mistura!.length > 0) {
+        <section class="inspector-section">
+          <h3>Mistura Atual</h3>
+          <app-mixture-bar [items]="furnace().mistura!" />
+        </section>
+      }
+
+      <!-- Seção: Último Laudo -->
+      @if (furnace().ultimoLaudo) {
+        <section class="inspector-section">
+          <h3>Último Laudo</h3>
+          <div class="laudo-card" [class.aprovado]="furnace().ultimoLaudo!.aprovado" [class.reprovado]="!furnace().ultimoLaudo!.aprovado">
+            <div class="laudo-header">
+              <span class="laudo-status">{{ furnace().ultimoLaudo!.aprovado ? 'Aprovado' : 'Reprovado' }}</span>
+              <span class="laudo-date">{{ furnace().ultimoLaudo!.data }}</span>
+            </div>
+            <div class="laudo-detail">
+              <span class="detail-label">CaO</span>
+              <span class="detail-value">{{ furnace().ultimoLaudo!.cao }}%</span>
+            </div>
+          </div>
+        </section>
+      }
+
+      <!-- Seção: Alertas -->
+      @if (furnace().alertas && furnace().alertas!.length > 0) {
+        <section class="inspector-section">
+          <h3>Alertas Ativos</h3>
+          <div class="alerts-list">
+            @for (alerta of furnace().alertas; track alerta.mensagem) {
+              <div class="alert-item" [class]="'alert-' + alerta.severidade">
+                <span class="alert-icon">{{ getAlertIcon(alerta.tipo) }}</span>
+                <span class="alert-message">{{ alerta.mensagem }}</span>
+                <span class="alert-severity">{{ alerta.severidade }}</span>
+              </div>
+            }
+          </div>
+        </section>
+      }
+
+      <!-- Seção: Operação -->
+      <section class="inspector-section">
+        <h3>Operação</h3>
+        <div class="operation-grid">
+          <div class="operation-item">
+            <span class="operation-label">Operador</span>
+            <span class="operation-value">{{ furnace().operador || '-' }}</span>
+          </div>
+          <div class="operation-item">
+            <span class="operation-label">Turno</span>
+            <span class="operation-value">{{ furnace().turnoAtual || '-' }}</span>
+          </div>
+          <div class="operation-item">
+            <span class="operation-label">Tempo de Operação</span>
+            <span class="operation-value">{{ furnace().tempoOperacao || '-' }}</span>
+          </div>
+        </div>
+
+        <!-- Botão de Registro de Turno -->
+        @if (furnace().status === 'ativo') {
+          <button class="btn-turno" (click)="onRegistrarTurno()">
+            @if (registroAberto()) {
+              Finalizar Turno
+            } @else {
+              Iniciar Turno
+            }
+          </button>
+        }
+      </section>
+    </div>
+  </div>
+</div>
