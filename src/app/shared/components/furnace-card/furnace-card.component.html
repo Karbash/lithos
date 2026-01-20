@@ -6,65 +6,89 @@
   [class.has-critical]="criticalAlerts() > 0"
   (click)="onClick()">
 
-  <!-- Header -->
-  <div class="furnace-header">
-    <div class="furnace-title">
-      <h3>{{ furnace().nome }}</h3>
-      <span class="furnace-type">{{ furnace().tipo }} · {{ furnace().planta }}</span>
+  <!-- Header com Nome e Status -->
+  <div class="card-header">
+    <div class="furnace-info">
+      <h2 class="furnace-name">{{ furnace().nome }}</h2>
+      <span class="furnace-location">{{ furnace().planta }} · {{ furnace().tipo }}</span>
     </div>
-    <div class="furnace-header-right">
-      @if (alertCount() > 0) {
-        <span class="alert-badge" [class.critical]="criticalAlerts() > 0">
-          {{ alertCount() }}
-        </span>
-      }
-      <span class="furnace-status">{{ getStatusLabel() }}</span>
+    <div class="status-badge" [class]="furnace().status">
+      <span class="status-dot"></span>
+      {{ getStatusLabel() }}
     </div>
   </div>
 
-  <!-- Temperatura -->
-  <div class="furnace-temperature">
-    <app-temperature-gauge
-      [temperature]="furnace().temperaturaAtual"
-      [min]="0"
-      [max]="1500" />
+  <!-- Alertas se houver -->
+  @if (alertCount() > 0) {
+    <div class="alert-bar" [class.critical]="criticalAlerts() > 0">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+        <line x1="12" y1="9" x2="12" y2="13"/>
+        <line x1="12" y1="17" x2="12.01" y2="17"/>
+      </svg>
+      <span>{{ alertCount() }} {{ alertCount() === 1 ? 'alerta' : 'alertas' }}</span>
+    </div>
+  }
+
+  <!-- Seção de Temperatura - Destaque -->
+  <div class="temp-section">
+    <div class="temp-header">
+      <span class="temp-label">Temperatura</span>
+      <span class="temp-meta">Meta: {{ furnace().temperaturaMeta }}°C</span>
+    </div>
+    <div class="temp-display">
+      <span class="temp-value" [style.color]="getTempColor()">{{ furnace().temperaturaAtual }}<small>°C</small></span>
+    </div>
+    <div class="temp-bar">
+      <div class="temp-bar-track">
+        <div class="temp-bar-fill" [style.width.%]="getTempPercentage()" [style.background]="getTempColor()"></div>
+      </div>
+      <div class="temp-bar-marker" [style.left.%]="getMetaPercentage()">
+        <span class="marker-line"></span>
+      </div>
+    </div>
   </div>
 
-  <!-- Métricas principais -->
-  <div class="furnace-metrics">
+  <!-- Métricas em linha -->
+  <div class="metrics-row">
     <div class="metric">
       <span class="metric-label">Rendimento</span>
-      <span class="metric-value">{{ furnace().rendimentoAtual }}%</span>
+      <span class="metric-value">{{ furnace().rendimentoAtual }}<small>%</small></span>
     </div>
-    <div class="metric">
+    <div class="metric-divider"></div>
+    <div class="metric" [class.ok]="Math.abs(furnace().desvioMeta) <= 2" [class.warning]="Math.abs(furnace().desvioMeta) > 2 && Math.abs(furnace().desvioMeta) <= 5" [class.critical]="Math.abs(furnace().desvioMeta) > 5">
       <span class="metric-label">Desvio</span>
-      <span class="metric-value" [class]="desvioClass()">
-        {{ furnace().desvioMeta > 0 ? '+' : '' }}{{ furnace().desvioMeta }}%
-      </span>
+      <span class="metric-value">{{ furnace().desvioMeta > 0 ? '+' : '' }}{{ furnace().desvioMeta }}<small>%</small></span>
     </div>
+    <div class="metric-divider"></div>
     <div class="metric">
       <span class="metric-label">Média</span>
-      <span class="metric-value">{{ furnace().mediaMovel }}°C</span>
+      <span class="metric-value">{{ furnace().mediaMovel }}<small>°C</small></span>
     </div>
   </div>
 
   <!-- Mistura compacta -->
   @if (furnace().mistura && furnace().mistura!.length > 0) {
-    <div class="furnace-mixture-compact">
+    <div class="mixture-section">
       <app-mixture-bar [items]="furnace().mistura!" />
     </div>
   }
 
   <!-- Footer -->
-  <div class="furnace-footer">
-    <div class="footer-left">
+  <div class="card-footer">
+    <div class="operator-info">
       @if (furnace().operador) {
-        <span class="footer-operator">{{ furnace().operador }}</span>
+        <span class="operator-name">{{ furnace().operador }}</span>
       }
       @if (furnace().turnoAtual) {
-        <span class="footer-turno">Turno {{ furnace().turnoAtual }}</span>
+        <span class="turno-tag">Turno {{ furnace().turnoAtual }}</span>
       }
     </div>
-    <button class="btn-edit" (click)="onEdit($event)">Editar</button>
+    <button class="btn-view" (click)="onClick()">
+      Ver
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="9 18 15 12 9 6"/>
+      </svg>
+    </button>
   </div>
 </div>

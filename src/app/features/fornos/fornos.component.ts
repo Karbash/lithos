@@ -1,6 +1,6 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal, OnInit, computed } from '@angular/core';
 import { FornosService } from './fornos.service';
-import { RegistrosService, RegistroTurno } from './registros.service';
+import { RegistrosService, RegistroTurno, LeituraTurno } from './registros.service';
 import {
   FurnaceCardComponent,
   Furnace,
@@ -8,6 +8,7 @@ import {
 import { FurnaceInspectorComponent } from '../../shared/components/furnace-inspector/furnace-inspector.component';
 import { TurnoModalComponent } from '../../shared/components/turno-modal/turno-modal.component';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+import { PermissionsService } from '../../core/services/permissions';
 
 @Component({
   selector: 'app-fornos',
@@ -24,6 +25,10 @@ import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angula
 export class FornosComponent implements OnInit {
   private fornosService = inject(FornosService);
   private registrosService = inject(RegistrosService);
+  private permissionsService = inject(PermissionsService);
+
+  // Permissões do usuário para este módulo
+  permissions = computed(() => this.permissionsService.getModulePermissions('fornos'));
 
   fornos = signal<Furnace[]>([]);
   loading = signal(true);
@@ -76,8 +81,8 @@ export class FornosComponent implements OnInit {
 
   loadRegistroAberto(fornoId: string): void {
     this.registrosService.getAberto(fornoId).subscribe({
-      next: (registros) => {
-        this.registroAberto.set(registros.length > 0 ? registros[0] : null);
+      next: (registro) => {
+        this.registroAberto.set(registro);
       },
     });
   }
@@ -95,7 +100,19 @@ export class FornosComponent implements OnInit {
       next: (novoRegistro) => {
         this.registroAberto.set(novoRegistro);
         this.closeTurnoModal();
-        this.loadFornos();
+        // Atualiza a temperatura do forno com a temperatura inicial
+        if (this.selectedFurnace()) {
+          this.fornosService
+            .atualizarTemperatura(this.selectedFurnace()!.id, registro.temperaturaInicio)
+            .subscribe({
+              next: (fornoAtualizado) => {
+                if (fornoAtualizado) {
+                  this.selectedFurnace.set(fornoAtualizado);
+                }
+                this.loadFornos();
+              },
+            });
+        }
       },
     });
   }
@@ -103,9 +120,45 @@ export class FornosComponent implements OnInit {
   onFinalizarTurno(event: { id: string; dados: Partial<RegistroTurno> }): void {
     this.registrosService.finalizarTurno(event.id, event.dados).subscribe({
       next: () => {
-        this.registroAberto.set(null);
-        this.closeTurnoModal();
-        this.loadFornos();
+        // Atualiza a temperatura final do forno
+        if (this.selectedFurnace() && event.dados.temperaturaFim) {
+          this.fornosService
+            .atualizarTemperatura(this.selectedFurnace()!.id, event.dados.temperaturaFim)
+            .subscribe({
+              next: (fornoAtualizado) => {
+                if (fornoAtualizado) {
+                  this.selectedFurnace.set(fornoAtualizado);
+                }
+                this.registroAberto.set(null);
+                this.closeTurnoModal();
+                this.loadFornos();
+              },
+            });
+        } else {
+          this.registroAberto.set(null);
+          this.closeTurnoModal();
+          this.loadFornos();
+        }
+      },
+    });
+  }
+
+  /**
+   * Quando uma leitura é registrada durante o turno
+   */
+  onLeituraRegistrada(event: { fornoId: string; leitura: LeituraTurno }): void {
+    // Atualiza a temperatura do forno com a nova leitura
+    this.fornosService.atualizarTemperatura(event.fornoId, event.leitura.temperatura).subscribe({
+      next: (fornoAtualizado) => {
+        if (fornoAtualizado) {
+          this.selectedFurnace.set(fornoAtualizado);
+          // Atualiza na lista também
+          this.fornos.update((list) =>
+            list.map((f) => (f.id === fornoAtualizado.id ? fornoAtualizado : f)),
+          );
+        }
+        // Recarrega o registro aberto para ter as leituras atualizadas
+        this.loadRegistroAberto(event.fornoId);
       },
     });
   }
@@ -189,7 +242,7 @@ export class FornosComponent implements OnInit {
   }
 
   onEditClick(id: string): void {
-    this.openModal(id);
+    this.openInspector(id);
   }
 
   get totalFornos(): number {

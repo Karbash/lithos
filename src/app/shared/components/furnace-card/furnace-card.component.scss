@@ -1,28 +1,21 @@
 @use '../../../styles/variables' as *;
 
 .furnace-card {
-  background-color: rgba($bg-secondary, 0.9);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: 2px solid rgba($border-color, 0.4);
-  border-radius: 12px;
-  padding: 20px;
+  background: $bg-secondary;
+  border: 1px solid rgba($border-color, 0.5);
+  border-radius: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  min-height: 300px;
+  overflow: hidden;
   touch-action: manipulation;
 
   &:hover,
   &:active {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-
-    .btn-edit {
-      opacity: 1;
-    }
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    border-color: rgba($border-color, 0.8);
   }
 
   &.active {
@@ -39,128 +32,251 @@
   }
 
   &.has-critical {
-    border-color: rgba($red, 0.6);
-    box-shadow: 0 0 24px rgba($red, 0.15);
-    animation: pulse-critical 2s infinite;
+    border-color: rgba($red, 0.5);
+    box-shadow: 0 0 20px rgba($red, 0.12);
   }
 }
 
-@keyframes pulse-critical {
-  0%,
-  100% {
-    box-shadow: 0 0 24px rgba($red, 0.15);
-  }
-  50% {
-    box-shadow: 0 0 32px rgba($red, 0.3);
-  }
-}
-
-// Header
-.furnace-header {
+// ============================================
+// HEADER
+// ============================================
+.card-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  padding: 18px 20px 14px;
+  gap: 12px;
 }
 
-.furnace-title {
-  h3 {
-    margin: 0;
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: $text-primary;
-  }
+.furnace-info {
+  flex: 1;
+  min-width: 0;
 }
 
-.furnace-type {
+.furnace-name {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: $text-primary;
+  line-height: 1.2;
+}
+
+.furnace-location {
+  display: block;
   font-size: 0.9rem;
-  color: $text-muted;
-  margin-top: 2px;
+  color: $text-secondary;
+  margin-top: 3px;
 }
 
-.furnace-header-right {
+.status-badge {
   display: flex;
   align-items: center;
-  gap: 10px;
-}
-
-.alert-badge {
-  background: rgba($yellow, 0.25);
-  color: $yellow;
-  font-size: 0.85rem;
-  font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 12px;
-  min-width: 24px;
-  text-align: center;
-
-  &.critical {
-    background: rgba($red, 0.25);
-    color: #ff6b6b;
-    animation: pulse 1.5s infinite;
-    font-size: 0.95rem;
-  }
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.7;
-    transform: scale(1.05);
-  }
-}
-
-.furnace-status {
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
   font-size: 0.8rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 6px 12px;
-  border-radius: 6px;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
 
-  .active & {
-    background: rgba($green, 0.2);
+  &.ativo {
+    background: rgba($green, 0.15);
     color: #4ade80;
   }
 
-  .maintenance & {
-    background: rgba($yellow, 0.2);
+  &.manutencao {
+    background: rgba($yellow, 0.15);
     color: #fbbf24;
   }
 
-  .inactive & {
-    background: rgba($text-muted, 0.2);
+  &.inativo {
+    background: rgba($text-muted, 0.15);
     color: $text-muted;
   }
 }
 
-// Temperature
-.furnace-temperature {
-  flex-shrink: 0;
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+
+  .ativo & {
+    animation: pulse-dot 2s infinite;
+  }
 }
 
-// Metrics
-.furnace-metrics {
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+// ============================================
+// ALERTAS
+// ============================================
+.alert-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  margin: 0 16px 12px;
+  background: rgba($yellow, 0.1);
+  border: 1px solid rgba($yellow, 0.25);
+  border-radius: 8px;
+  color: #fbbf24;
+  font-size: 0.85rem;
+  font-weight: 600;
+
+  &.critical {
+    background: rgba($red, 0.1);
+    border-color: rgba($red, 0.3);
+    color: #ff6b6b;
+    animation: pulse-alert 2s infinite;
+  }
+}
+
+@keyframes pulse-alert {
+  0%,
+  100% {
+    background: rgba($red, 0.1);
+  }
+  50% {
+    background: rgba($red, 0.18);
+  }
+}
+
+// ============================================
+// TEMPERATURA
+// ============================================
+.temp-section {
+  padding: 16px 20px;
+  background: rgba($bg-tertiary, 0.4);
+  margin: 0 16px;
+  border-radius: 10px;
+}
+
+.temp-header {
   display: flex;
   justify-content: space-between;
-  gap: 10px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.temp-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: $text-secondary;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.temp-meta {
+  font-size: 0.85rem;
+  color: $text-muted;
+}
+
+.temp-display {
+  margin-bottom: 12px;
+}
+
+.temp-value {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -1px;
+
+  small {
+    font-size: 0.5em;
+    font-weight: 600;
+    opacity: 0.7;
+  }
+}
+
+.temp-bar {
+  position: relative;
+  padding-top: 8px;
+}
+
+.temp-bar-track {
+  height: 6px;
+  background: rgba($bg-input, 0.8);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.temp-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+.temp-bar-marker {
+  position: absolute;
+  top: 2px;
+  transform: translateX(-50%);
+}
+
+.marker-line {
+  display: block;
+  width: 2px;
+  height: 18px;
+  background: $text-secondary;
+  border-radius: 1px;
+}
+
+// ============================================
+// MÉTRICAS
+// ============================================
+.metrics-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  gap: 8px;
 }
 
 .metric {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   flex: 1;
-  padding: 12px;
-  background: rgba($bg-input, 0.6);
+  text-align: center;
+  padding: 10px 8px;
   border-radius: 8px;
+  transition: background 0.2s ease;
+
+  &.ok .metric-value {
+    color: #4ade80;
+  }
+
+  &.warning {
+    background: rgba($yellow, 0.08);
+    .metric-value {
+      color: #fbbf24;
+    }
+  }
+
+  &.critical {
+    background: rgba($red, 0.08);
+    .metric-value {
+      color: #ff6b6b;
+    }
+  }
+}
+
+.metric-divider {
+  width: 1px;
+  height: 36px;
+  background: rgba($border-color, 0.4);
 }
 
 .metric-label {
-  font-size: 0.75rem;
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
   color: $text-muted;
   text-transform: uppercase;
   letter-spacing: 0.3px;
@@ -168,103 +284,117 @@
 }
 
 .metric-value {
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: $text-primary;
 
-  &.desvio-ok {
-    color: #4ade80;
-  }
-  &.desvio-warning {
-    color: #fbbf24;
-  }
-  &.desvio-critical {
-    color: #ff6b6b;
+  small {
+    font-size: 0.7em;
+    font-weight: 500;
+    opacity: 0.7;
   }
 }
 
-// Mixture compact
-.furnace-mixture-compact {
-  flex: 1;
-  min-height: 0;
+// ============================================
+// MISTURA
+// ============================================
+.mixture-section {
+  padding: 0 20px 16px;
 }
 
-// Footer
-.furnace-footer {
+// ============================================
+// FOOTER
+// ============================================
+.card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 14px;
-  border-top: 1px solid rgba($border-color, 0.4);
+  padding: 14px 20px;
   margin-top: auto;
+  border-top: 1px solid rgba($border-color, 0.3);
+  background: rgba($bg-tertiary, 0.2);
 }
 
-.footer-left {
+.operator-info {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
-.footer-operator {
-  font-size: 0.95rem;
-  color: $text-primary;
+.operator-name {
+  font-size: 0.9rem;
   font-weight: 500;
+  color: $text-primary;
 }
 
-.footer-turno {
-  font-size: 0.85rem;
-  color: $text-secondary;
+.turno-tag {
+  background: rgba($accent, 0.12);
+  color: $accent;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 
-.btn-edit {
-  padding: 10px 18px;
-  min-height: 44px;
+.btn-view {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  min-height: 42px;
   background: transparent;
-  border: 2px solid $border-color;
-  border-radius: 6px;
+  border: 1px solid rgba($border-color, 0.6);
+  border-radius: 8px;
   color: $text-secondary;
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  opacity: 0.7;
   transition: all 0.15s ease;
   touch-action: manipulation;
 
   &:hover,
   &:active {
-    opacity: 1;
     background: $bg-tertiary;
-    color: $text-primary;
     border-color: $accent;
+    color: $text-primary;
   }
 }
 
-// Mobile
+// ============================================
+// MOBILE
+// ============================================
 @media (max-width: 768px) {
-  .furnace-card {
-    min-height: auto;
-    padding: 16px;
-    gap: 14px;
+  .card-header {
+    padding: 16px 16px 12px;
   }
 
-  .furnace-title h3 {
-    font-size: 1.1rem;
+  .furnace-name {
+    font-size: 1.2rem;
   }
 
-  .furnace-type {
-    font-size: 0.85rem;
+  .temp-section {
+    margin: 0 12px;
+    padding: 14px 16px;
   }
 
-  .metric {
-    padding: 10px 8px;
+  .temp-value {
+    font-size: 2.1rem;
+  }
+
+  .metrics-row {
+    padding: 14px 16px;
   }
 
   .metric-value {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
 
-  .btn-edit {
-    opacity: 1;
-    padding: 12px 20px;
+  .card-footer {
+    padding: 12px 16px;
+  }
+
+  .btn-view {
+    padding: 10px 14px;
   }
 }

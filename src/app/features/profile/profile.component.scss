@@ -4,78 +4,556 @@
   height: 100%;
   width: 100%;
   display: flex;
-  align-items: flex-start;
   justify-content: center;
-  padding: 2rem;
+  padding: 1.5rem;
   overflow-y: auto;
   box-sizing: border-box;
 }
 
 .profile-content {
   width: 100%;
-  max-width: 500px;
+  max-width: 700px;
 
   h1 {
-    font-size: 1.25rem;
-    font-weight: 600;
+    font-size: 1.5rem;
+    font-weight: 700;
     color: $text-primary;
     margin: 0 0 1.5rem 0;
   }
 }
 
-.profile-card {
-  background-color: rgba($bg-secondary, 0.85);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: 1px solid rgba($border-color, 0.3);
-  border-radius: 8px;
+// ============================================
+// CARD DO USUARIO
+// ============================================
+.user-card {
+  background: $bg-secondary;
+  border: 1px solid rgba($border-color, 0.4);
+  border-radius: 14px;
   padding: 24px;
+  margin-bottom: 20px;
 }
 
-.profile-avatar {
-  width: 64px;
-  height: 64px;
+.user-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba($border-color, 0.3);
+}
+
+.user-avatar {
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
-  background: $accent;
+  background: linear-gradient(135deg, $accent, rgba($accent, 0.7));
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 24px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  flex-shrink: 0;
 }
 
-.profile-info {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.profile-field {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-
-  label {
-    font-size: 0.75rem;
-    color: $text-muted;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  span {
-    font-size: 0.875rem;
+.user-info {
+  h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 700;
     color: $text-primary;
   }
 }
 
+.user-role {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 4px 12px;
+  background: rgba($accent, 0.12);
+  color: $accent;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.detail-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: $text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.detail-value {
+  font-size: 0.95rem;
+  color: $text-primary;
+  font-weight: 500;
+}
+
+// Plantas Vinculadas
+.plantas-section {
+  margin-bottom: 16px;
+
+  h3 {
+    margin: 0 0 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: $text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+}
+
+.plantas-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.planta-tag {
+  padding: 6px 14px;
+  background: rgba($green, 0.1);
+  border: 1px solid rgba($green, 0.25);
+  color: #4ade80;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.empty-text {
+  color: $text-muted;
+  font-size: 0.9rem;
+}
+
+.turno-preferencial {
+  padding: 12px 16px;
+  background: rgba($bg-tertiary, 0.5);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pref-label {
+  font-size: 0.85rem;
+  color: $text-secondary;
+}
+
+.pref-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+// ============================================
+// TURNO ATIVO
+// ============================================
+.turno-ativo-card {
+  background: linear-gradient(135deg, rgba($green, 0.08), rgba($green, 0.03));
+  border: 2px solid rgba($green, 0.35);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.turno-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.turno-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba($green, 0.15);
+  color: #4ade80;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.badge-dot {
+  width: 8px;
+  height: 8px;
+  background: #4ade80;
+  border-radius: 50%;
+  animation: pulse-dot 1.5s infinite;
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.turno-tempo {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: $text-primary;
+}
+
+.turno-info {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 16px;
+}
+
+.turno-forno {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-right: 20px;
+  border-right: 1px solid rgba($border-color, 0.3);
+}
+
+.forno-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: $text-muted;
+  text-transform: uppercase;
+}
+
+.forno-nome {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: $text-primary;
+}
+
+.forno-planta {
+  font-size: 0.85rem;
+  color: $text-secondary;
+}
+
+.turno-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  flex: 1;
+}
+
+.turno-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  .label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: $text-muted;
+    text-transform: uppercase;
+  }
+
+  .value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: $text-primary;
+  }
+}
+
+.btn-ir-forno {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  background: rgba($green, 0.15);
+  border: 1px solid rgba($green, 0.4);
+  border-radius: 10px;
+  color: #4ade80;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: rgba($green, 0.25);
+    border-color: $green;
+  }
+}
+
+// ============================================
+// ESTATISTICAS
+// ============================================
+.stats-card {
+  background: $bg-secondary;
+  border: 1px solid rgba($border-color, 0.4);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 20px;
+
+  h3 {
+    margin: 0 0 16px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: $text-primary;
+  }
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 12px;
+  background: rgba($bg-tertiary, 0.5);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: $text-primary;
+  line-height: 1;
+
+  small {
+    font-size: 0.6em;
+    font-weight: 500;
+    opacity: 0.7;
+  }
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: $text-muted;
+  text-transform: uppercase;
+  margin-top: 6px;
+  letter-spacing: 0.3px;
+}
+
+// ============================================
+// HISTORICO
+// ============================================
+.historico-card {
+  background: $bg-secondary;
+  border: 1px solid rgba($border-color, 0.4);
+  border-radius: 14px;
+  padding: 20px;
+
+  h3 {
+    margin: 0 0 16px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: $text-primary;
+  }
+}
+
+.historico-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.historico-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  background: rgba($bg-tertiary, 0.4);
+  border-radius: 10px;
+  border-left: 3px solid $text-muted;
+
+  &.status-aberto {
+    border-left-color: $green;
+    background: rgba($green, 0.05);
+  }
+
+  &.status-fechado {
+    border-left-color: $accent;
+  }
+}
+
+.historico-data {
+  display: flex;
+  flex-direction: column;
+  min-width: 100px;
+
+  .data {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  .horario {
+    font-size: 0.8rem;
+    color: $text-secondary;
+  }
+}
+
+.historico-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  .forno {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  .turno-letra {
+    font-size: 0.8rem;
+    color: $text-secondary;
+  }
+}
+
+.historico-metricas {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.producao {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+
+  &.aberto {
+    background: rgba($green, 0.15);
+    color: #4ade80;
+  }
+
+  &.fechado {
+    background: rgba($text-muted, 0.15);
+    color: $text-secondary;
+  }
+}
+
+// ============================================
+// ESTADOS VAZIOS E LOADING
+// ============================================
+.empty-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  background: $bg-secondary;
+  border: 1px solid rgba($border-color, 0.4);
+  border-radius: 14px;
+  color: $text-muted;
+
+  svg {
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  color: $text-secondary;
+
+  p {
+    margin-top: 12px;
+    font-size: 0.9rem;
+  }
+}
+
+.loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba($border-color, 0.3);
+  border-top-color: $accent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ============================================
+// RESPONSIVO
+// ============================================
 @media (max-width: 600px) {
   .profile {
     padding: 1rem;
   }
 
-  .profile-content h1 {
-    font-size: 1.5rem;
+  .user-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .detail-row {
+    grid-template-columns: 1fr;
+  }
+
+  .turno-info {
+    flex-direction: column;
+  }
+
+  .turno-forno {
+    border-right: none;
+    border-bottom: 1px solid rgba($border-color, 0.3);
+    padding-right: 0;
+    padding-bottom: 16px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .historico-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .historico-metricas {
+    width: 100%;
+    justify-content: space-between;
   }
 }

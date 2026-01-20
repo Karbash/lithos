@@ -10,12 +10,36 @@
         <span class="inspector-status" [class]="furnace().status">
           {{ getStatusLabel() }}
         </span>
-        <button class="btn-close" (click)="onClose()">×</button>
+        @if (canEdit()) {
+          <button class="btn-edit" (click)="onEditarForno()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+          </button>
+        }
+        <button class="btn-close" (click)="onClose()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
       </div>
     </div>
 
     <!-- Content -->
     <div class="inspector-content">
+
+      <!-- PAINEL DE TURNO ATIVO - Destaque quando há turno aberto -->
+      @if (registroAberto()) {
+        <app-turno-painel
+          [registro]="registroAberto()!"
+          [fornoNome]="furnace().nome"
+          [temperaturaAtual]="furnace().temperaturaAtual"
+          (leituraRegistrada)="onLeituraRegistrada($event)"
+          (finalizarTurno)="onRegistrarTurno()" />
+      }
+
       <!-- Seção: Temperatura -->
       <section class="inspector-section">
         <h3>Temperatura</h3>
@@ -30,18 +54,18 @@
           </div>
           <div class="temp-stat">
             <span class="stat-value">{{ furnace().mediaMovel }}°C</span>
-            <span class="stat-label">Média Móvel</span>
+            <span class="stat-label">Media Movel</span>
           </div>
           <div class="temp-stat">
-            <span class="stat-value">σ {{ furnace().desvioPadrao }}°C</span>
-            <span class="stat-label">Desvio Padrão</span>
+            <span class="stat-value">{{ furnace().desvioPadrao }}°C</span>
+            <span class="stat-label">Desvio Padrao</span>
           </div>
         </div>
 
         <!-- Histórico -->
         @if (furnace().temperaturaHistorico && furnace().temperaturaHistorico.length > 0) {
           <div class="history-section">
-            <span class="history-label">Histórico (24h)</span>
+            <span class="history-label">Historico (24h)</span>
             <div class="history-chart">
               @for (temp of furnace().temperaturaHistorico; track $index) {
                 <div
@@ -95,7 +119,7 @@
       <!-- Seção: Último Laudo -->
       @if (furnace().ultimoLaudo) {
         <section class="inspector-section">
-          <h3>Último Laudo</h3>
+          <h3>Ultimo Laudo</h3>
           <div class="laudo-card" [class.aprovado]="furnace().ultimoLaudo!.aprovado" [class.reprovado]="!furnace().ultimoLaudo!.aprovado">
             <div class="laudo-header">
               <span class="laudo-status">{{ furnace().ultimoLaudo!.aprovado ? 'Aprovado' : 'Reprovado' }}</span>
@@ -125,35 +149,36 @@
         </section>
       }
 
-      <!-- Seção: Operação -->
-      <section class="inspector-section">
-        <h3>Operação</h3>
-        <div class="operation-grid">
-          <div class="operation-item">
-            <span class="operation-label">Operador</span>
-            <span class="operation-value">{{ furnace().operador || '-' }}</span>
+      <!-- Seção: Operação - Só mostra se NÃO há turno ativo -->
+      @if (!registroAberto()) {
+        <section class="inspector-section">
+          <h3>Operacao</h3>
+          <div class="operation-grid">
+            <div class="operation-item">
+              <span class="operation-label">Operador</span>
+              <span class="operation-value">{{ furnace().operador || '-' }}</span>
+            </div>
+            <div class="operation-item">
+              <span class="operation-label">Turno</span>
+              <span class="operation-value">{{ furnace().turnoAtual || '-' }}</span>
+            </div>
+            <div class="operation-item">
+              <span class="operation-label">Tempo de Operacao</span>
+              <span class="operation-value">{{ furnace().tempoOperacao || '-' }}</span>
+            </div>
           </div>
-          <div class="operation-item">
-            <span class="operation-label">Turno</span>
-            <span class="operation-value">{{ furnace().turnoAtual || '-' }}</span>
-          </div>
-          <div class="operation-item">
-            <span class="operation-label">Tempo de Operação</span>
-            <span class="operation-value">{{ furnace().tempoOperacao || '-' }}</span>
-          </div>
-        </div>
 
-        <!-- Botão de Registro de Turno -->
-        @if (furnace().status === 'ativo') {
-          <button class="btn-turno" (click)="onRegistrarTurno()">
-            @if (registroAberto()) {
-              Finalizar Turno
-            } @else {
+          <!-- Botão de Iniciar Turno - Só quando não há turno ativo -->
+          @if (furnace().status === 'ativo') {
+            <button class="btn-turno" (click)="onRegistrarTurno()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
               Iniciar Turno
-            }
-          </button>
-        }
-      </section>
+            </button>
+          }
+        </section>
+      }
     </div>
   </div>
 </div>

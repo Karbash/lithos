@@ -1,5 +1,4 @@
 import { Component, input, output, computed } from '@angular/core';
-import { TemperatureGaugeComponent } from '../temperature-gauge/temperature-gauge.component';
 import { MixtureBarComponent, MixtureItem } from '../mixture-bar/mixture-bar.component';
 
 export interface FurnaceAlert {
@@ -40,12 +39,13 @@ export interface Furnace {
 @Component({
   selector: 'app-furnace-card',
   standalone: true,
-  imports: [TemperatureGaugeComponent, MixtureBarComponent],
+  imports: [MixtureBarComponent],
   templateUrl: './furnace-card.component.html',
   styleUrl: './furnace-card.component.scss',
 })
 export class FurnaceCardComponent {
   furnace = input.required<Furnace>();
+  canEdit = input<boolean>(true); // Permissão para editar
   cardClick = output<string>();
   editClick = output<string>();
 
@@ -76,4 +76,30 @@ export class FurnaceCardComponent {
     if (status === 'manutencao') return 'Manutenção';
     return 'Inativo';
   }
+
+  getTempColor(): string {
+    const temp = this.furnace().temperaturaAtual;
+    const meta = this.furnace().temperaturaMeta;
+    const diff = Math.abs(temp - meta);
+    const tolerance = meta * 0.05; // 5% tolerance
+
+    if (diff <= tolerance) return '#22c55e'; // Verde - OK
+    if (diff <= tolerance * 2) return '#eab308'; // Amarelo - Atenção
+    return '#ef4444'; // Vermelho - Crítico
+  }
+
+  getTempPercentage(): number {
+    const temp = this.furnace().temperaturaAtual;
+    const max = 1500;
+    return Math.min((temp / max) * 100, 100);
+  }
+
+  getMetaPercentage(): number {
+    const meta = this.furnace().temperaturaMeta;
+    const max = 1500;
+    return Math.min((meta / max) * 100, 100);
+  }
+
+  // Expor Math para uso no template
+  Math = Math;
 }

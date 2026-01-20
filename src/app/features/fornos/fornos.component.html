@@ -1,36 +1,86 @@
 <div class="fornos">
   <div class="fornos-content">
+    <!-- Header -->
     <div class="fornos-header">
-      <div>
+      <div class="header-text">
         <h1>Fornos</h1>
-        <p>Monitoramento e gestão de fornos</p>
+        <p>Monitoramento em tempo real</p>
       </div>
-      <button class="btn-primary" (click)="openModal()">Novo Forno</button>
+      @if (permissions().canCreate) {
+        <button class="btn-primary" (click)="openModal()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          Novo Forno
+        </button>
+      }
     </div>
 
-    <!-- Resumo -->
+    <!-- Resumo Visual -->
     @if (!loading() && fornos().length > 0) {
-      <div class="fornos-summary">
-        <div class="summary-card">
-          <span class="summary-value">{{ totalFornos }}</span>
-          <span class="summary-label">Total</span>
+      <div class="status-overview">
+        <div class="overview-card total">
+          <div class="overview-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"/>
+              <rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/>
+            </svg>
+          </div>
+          <div class="overview-data">
+            <span class="overview-number">{{ totalFornos }}</span>
+            <span class="overview-label">Total de Fornos</span>
+          </div>
         </div>
-        <div class="summary-card active">
-          <span class="summary-value">{{ fornosAtivos }}</span>
-          <span class="summary-label">Ativos</span>
+
+        <div class="overview-card active">
+          <div class="overview-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <div class="overview-data">
+            <span class="overview-number">{{ fornosAtivos }}</span>
+            <span class="overview-label">Em Operacao</span>
+          </div>
         </div>
-        <div class="summary-card" [class.critical]="alertasCriticos > 0">
-          <span class="summary-value">{{ alertasCriticos }}</span>
-          <span class="summary-label">Alertas Críticos</span>
+
+        <div class="overview-card alerts" [class.has-alerts]="alertasCriticos > 0">
+          <div class="overview-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+              <line x1="12" y1="9" x2="12" y2="13"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+          </div>
+          <div class="overview-data">
+            <span class="overview-number">{{ alertasCriticos }}</span>
+            <span class="overview-label">Alertas Criticos</span>
+          </div>
         </div>
       </div>
     }
 
+    <!-- Conteúdo Principal -->
     @if (loading()) {
-      <div class="loading">Carregando...</div>
+      <div class="loading-state">
+        <div class="loading-spinner"></div>
+        <p>Carregando fornos...</p>
+      </div>
     } @else if (fornos().length === 0) {
-      <div class="empty">
-        <p>Nenhum forno cadastrado</p>
+      <div class="empty-state">
+        <div class="empty-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <line x1="12" y1="8" x2="12" y2="16"/>
+            <line x1="8" y1="12" x2="16" y2="12"/>
+          </svg>
+        </div>
+        <h3>Nenhum forno cadastrado</h3>
+        <p>Comece adicionando seu primeiro forno</p>
         <button class="btn-primary" (click)="openModal()">Cadastrar Forno</button>
       </div>
     } @else {
@@ -51,8 +101,11 @@
   <app-furnace-inspector
     [furnace]="selectedFurnace()!"
     [registroAberto]="registroAberto()"
+    [canEdit]="permissions().canEdit"
     (closeInspector)="closeInspector()"
-    (registrarTurno)="openTurnoModal()" />
+    (registrarTurno)="openTurnoModal()"
+    (editarForno)="openModal($event)"
+    (leituraRegistrada)="onLeituraRegistrada($event)" />
 }
 
 <!-- Modal de Turno -->
@@ -66,71 +119,84 @@
     (finalizarTurno)="onFinalizarTurno($event)" />
 }
 
-<!-- Modal de Edição -->
+<!-- Modal de Edição/Criação -->
 @if (showModal()) {
   <div class="modal-overlay" (click)="closeModal()">
     <div class="modal" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h2>{{ editingId() ? 'Editar Forno' : 'Novo Forno' }}</h2>
-        <button class="btn-close" (click)="closeModal()">×</button>
+        <button class="btn-close" (click)="closeModal()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
       </div>
 
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div class="form-grid">
-          <div class="form-field">
-            <label for="nome">Nome</label>
-            <input type="text" id="nome" formControlName="nome" placeholder="Forno 01" />
+        <div class="form-content">
+          <div class="form-section">
+            <h3>Identificacao</h3>
+            <div class="form-row">
+              <div class="form-field">
+                <label for="nome">Nome do Forno</label>
+                <input type="text" id="nome" formControlName="nome" placeholder="Ex: Forno 01" />
+              </div>
+              <div class="form-field">
+                <label for="planta">Planta</label>
+                <input type="text" id="planta" formControlName="planta" placeholder="Ex: Planta A" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-field">
+                <label for="tipo">Tipo</label>
+                <select id="tipo" formControlName="tipo">
+                  <option value="">Selecione o tipo</option>
+                  <option value="Rotativo">Rotativo</option>
+                  <option value="Vertical">Vertical</option>
+                  <option value="Horizontal">Horizontal</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="status">Status</label>
+                <select id="status" formControlName="status">
+                  <option value="ativo">Ativo</option>
+                  <option value="inativo">Inativo</option>
+                  <option value="manutencao">Em Manutencao</option>
+                </select>
+              </div>
+            </div>
           </div>
 
-          <div class="form-field">
-            <label for="planta">Planta</label>
-            <input type="text" id="planta" formControlName="planta" placeholder="Planta A" />
-          </div>
-
-          <div class="form-field">
-            <label for="tipo">Tipo</label>
-            <select id="tipo" formControlName="tipo">
-              <option value="">Selecione</option>
-              <option value="Rotativo">Rotativo</option>
-              <option value="Vertical">Vertical</option>
-              <option value="Horizontal">Horizontal</option>
-            </select>
-          </div>
-
-          <div class="form-field">
-            <label for="capacidade">Capacidade (ton/dia)</label>
-            <input type="number" id="capacidade" formControlName="capacidade" />
-          </div>
-
-          <div class="form-field">
-            <label for="status">Status</label>
-            <select id="status" formControlName="status">
-              <option value="ativo">Ativo</option>
-              <option value="inativo">Inativo</option>
-              <option value="manutencao">Manutenção</option>
-            </select>
-          </div>
-
-          <div class="form-field">
-            <label for="temperatura">Temperatura Atual (°C)</label>
-            <input type="number" id="temperatura" formControlName="temperaturaAtual" />
-          </div>
-
-          <div class="form-field">
-            <label for="temperaturaMeta">Temperatura Meta (°C)</label>
-            <input type="number" id="temperaturaMeta" formControlName="temperaturaMeta" />
-          </div>
-
-          <div class="form-field">
-            <label for="rendimentoMeta">Rendimento Meta (%)</label>
-            <input type="number" id="rendimentoMeta" formControlName="rendimentoMeta" />
+          <div class="form-section">
+            <h3>Configuracoes</h3>
+            <div class="form-row">
+              <div class="form-field">
+                <label for="capacidade">Capacidade (ton/dia)</label>
+                <input type="number" id="capacidade" formControlName="capacidade" placeholder="0" />
+              </div>
+              <div class="form-field">
+                <label for="temperatura">Temperatura Atual (°C)</label>
+                <input type="number" id="temperatura" formControlName="temperaturaAtual" placeholder="0" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-field">
+                <label for="temperaturaMeta">Meta de Temperatura (°C)</label>
+                <input type="number" id="temperaturaMeta" formControlName="temperaturaMeta" placeholder="0" />
+              </div>
+              <div class="form-field">
+                <label for="rendimentoMeta">Meta de Rendimento (%)</label>
+                <input type="number" id="rendimentoMeta" formControlName="rendimentoMeta" placeholder="0" />
+              </div>
+            </div>
           </div>
         </div>
 
         <div class="modal-footer">
           <button type="button" class="btn-secondary" (click)="closeModal()">Cancelar</button>
           <button type="submit" class="btn-primary" [disabled]="form.invalid">
-            {{ editingId() ? 'Salvar' : 'Cadastrar' }}
+            {{ editingId() ? 'Salvar Alteracoes' : 'Cadastrar Forno' }}
           </button>
         </div>
       </form>

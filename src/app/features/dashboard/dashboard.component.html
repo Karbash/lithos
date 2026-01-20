@@ -1,15 +1,29 @@
 <div class="dashboard">
   <div class="dashboard-content">
-    <h1>Dashboard</h1>
-    <p>Selecione um módulo para começar</p>
+    <!-- Header com saudação -->
+    <div class="dashboard-header">
+      <div class="welcome-text">
+        <h1>Ola, {{ user()?.name ? user()!.name.split(' ')[0] : 'Usuario' }}</h1>
+        <p>{{ getRoleLabel() }} · Selecione um modulo para comecar</p>
+      </div>
+    </div>
 
+    <!-- Grid de Módulos -->
     <div class="modules-grid">
-      @for (module of modules; track module.id) {
+      @for (module of modules(); track module.id) {
         <app-module-card
           [card]="module"
           [selected]="selectedCard() === module.id"
           (cardClick)="onCardClick($event)" />
       }
     </div>
+
+    <!-- Mensagem se não houver módulos -->
+    @if (modules().length === 0) {
+      <div class="no-modules">
+        <p>Nenhum modulo disponivel para seu perfil.</p>
+        <p>Entre em contato com o administrador.</p>
+      </div>
+    }
   </div>
 </div>

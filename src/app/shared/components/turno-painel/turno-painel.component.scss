@@ -1,0 +1,345 @@
+@use '../../../styles/variables' as *;
+
+.turno-painel {
+  background: linear-gradient(135deg, rgba($green, 0.08), rgba($green, 0.03));
+  border: 2px solid rgba($green, 0.3);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+// ============================================
+// HEADER
+// ============================================
+.painel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.turno-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba($green, 0.15);
+  color: #4ade80;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.badge-dot {
+  width: 8px;
+  height: 8px;
+  background: #4ade80;
+  border-radius: 50%;
+  animation: pulse-dot 1.5s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.9); }
+}
+
+.tempo-decorrido {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: $text-primary;
+}
+
+// ============================================
+// INFO DO TURNO
+// ============================================
+.turno-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba($border-color, 0.3);
+  margin-bottom: 16px;
+}
+
+.info-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.info-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: $text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.info-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+// ============================================
+// ESTATÍSTICAS
+// ============================================
+.turno-stats {
+  margin-bottom: 16px;
+
+  h4 {
+    margin: 0 0 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: $text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 8px;
+  background: rgba($bg-input, 0.5);
+  border-radius: 8px;
+}
+
+.stat-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: $text-primary;
+}
+
+.stat-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: $text-muted;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+// ============================================
+// LEITURAS RECENTES
+// ============================================
+.leituras-recentes {
+  margin-bottom: 16px;
+
+  h4 {
+    margin: 0 0 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: $text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+}
+
+.leituras-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.leitura-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: rgba($bg-input, 0.4);
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.leitura-hora {
+  font-weight: 600;
+  color: $text-secondary;
+  min-width: 50px;
+}
+
+.leitura-temp {
+  font-weight: 700;
+  color: $text-primary;
+}
+
+.leitura-obs {
+  flex: 1;
+  color: $text-muted;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+// ============================================
+// FORMULÁRIO DE LEITURA
+// ============================================
+.form-leitura {
+  background: rgba($bg-tertiary, 0.5);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+
+  h4 {
+    margin: 0 0 14px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: $text-primary;
+  }
+}
+
+.form-field {
+  margin-bottom: 14px;
+
+  label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: $text-secondary;
+    margin-bottom: 6px;
+  }
+
+  input {
+    width: 100%;
+    padding: 12px 14px;
+    background: $bg-input;
+    border: 1px solid rgba($border-color, 0.5);
+    border-radius: 8px;
+    color: $text-primary;
+    font-size: 1rem;
+    transition: border-color 0.15s ease;
+    box-sizing: border-box;
+
+    &::placeholder {
+      color: $text-muted;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $accent;
+    }
+  }
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.btn-cancel {
+  flex: 1;
+  padding: 12px;
+  background: transparent;
+  border: 1px solid rgba($border-color, 0.5);
+  border-radius: 8px;
+  color: $text-secondary;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: $bg-tertiary;
+    color: $text-primary;
+  }
+}
+
+.btn-confirm {
+  flex: 1;
+  padding: 12px;
+  background: rgba($green, 0.15);
+  border: 1px solid rgba($green, 0.4);
+  border-radius: 8px;
+  color: #4ade80;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover:not(:disabled) {
+    background: rgba($green, 0.25);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// ============================================
+// AÇÕES DO TURNO
+// ============================================
+.turno-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-leitura {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  background: rgba($accent, 0.1);
+  border: 1px solid rgba($accent, 0.3);
+  border-radius: 10px;
+  color: $accent;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: rgba($accent, 0.18);
+    border-color: $accent;
+  }
+}
+
+.btn-finalizar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  background: rgba($red, 0.1);
+  border: 1px solid rgba($red, 0.3);
+  border-radius: 10px;
+  color: #ff6b6b;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: rgba($red, 0.18);
+    border-color: $red;
+  }
+}
+
+// ============================================
+// RESPONSIVO
+// ============================================
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .turno-actions {
+    flex-direction: column;
+  }
+}

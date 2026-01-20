@@ -20,6 +20,7 @@ export class LoginComponent {
   });
 
   authError = signal<string | null>(null);
+  loading = signal(false);
 
   onSubmit(): void {
     this.authError.set(null);
@@ -28,15 +29,26 @@ export class LoginComponent {
       return;
     }
 
+    this.loading.set(true);
+
     const email = this.loginForm.value.email ?? '';
     const password = this.loginForm.value.password ?? '';
 
     this.authService.login({ email, password }).subscribe({
-      next: () => {
-        this.router.navigate(['/dashboard']);
+      next: (response) => {
+        this.authService.getCurrentUser(response.token).subscribe({
+          next: () => {
+            this.router.navigate(['/dashboard']);
+          },
+          error: () => {
+            this.authError.set('Usuário não encontrado');
+            this.loading.set(false);
+          },
+        });
       },
-      error: () => {
-        this.authError.set('Credenciais inválidas');
+      error: (err) => {
+        this.authError.set(err.message || 'Credenciais inválidas');
+        this.loading.set(false);
       },
     });
   }
