@@ -1,150 +1,94 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { RouterOutlet, Router } from '@angular/router';
+import { Component, OnInit, OnDestroy, signal, computed, inject } from '@angular/core';
+import { RouterOutlet, RouterLink, Router } from '@angular/router';
+import { AuthService } from '../../core/services/auth';
 
-/**
- * Layout principal da aplicação - VS Code Style
- *
- * Fornece o layout base com header, main content e footer
- * idêntico ao Visual Studio Code, ocupando toda a tela.
- *
- * @example
- * ```html
- * <app-main-layout>
- *   <!-- Conteúdo será renderizado aqui -->
- * </app-main-layout>
- * ```
- */
 @Component({
-    selector: 'app-main-layout',
-    standalone: true,
-    imports: [RouterOutlet],
-    templateUrl: './main-layout.component.html',
-    styleUrl: './main-layout.component.scss'
+  selector: 'app-main-layout',
+  standalone: true,
+  imports: [RouterOutlet, RouterLink],
+  templateUrl: './main-layout.component.html',
+  styleUrl: './main-layout.component.scss',
 })
 export class MainLayoutComponent implements OnInit, OnDestroy {
-    /** Título da aplicação exibido na title bar */
-    appTitle = 'Lithos';
+  private router = inject(Router);
+  private authService = inject(AuthService);
 
-    /** Status de conectividade */
-    isOnline = navigator.onLine;
+  appTitle = 'Lithos';
+  appVersion = 'v1.0.0';
+  copyrightText = `Silver Lake @ ${new Date().getFullYear()}`;
 
-    /** Cache disponível */
-    hasCache = false;
+  isOnline = signal(navigator.onLine);
+  hasCache = signal(false);
+  menuOpen = signal(false);
 
-    /** Versão da aplicação */
-    appVersion = 'v1.0.0';
+  user = this.authService.user;
 
-    /** Ano atual para direitos autorais */
-    currentYear = new Date().getFullYear();
+  private onlineListener: (() => void) | null = null;
+  private offlineListener: (() => void) | null = null;
+  private clickOutsideListener: ((e: MouseEvent) => void) | null = null;
 
-    /** Nome da empresa */
-    companyName = 'Silver Lake';
+  connectivityStatus = computed(() =>
+    this.isOnline()
+      ? { colorClass: 'status-online', text: 'Online' }
+      : { colorClass: 'status-offline', text: 'Offline' },
+  );
 
-    /** Texto completo dos direitos autorais */
-    copyrightText = `${this.companyName} @ ${this.currentYear} - Todos os direitos reservados`;
+  cacheStatus = computed(() =>
+    this.hasCache()
+      ? { colorClass: 'status-online', text: 'Cache' }
+      : { colorClass: 'status-offline', text: 'Sem Cache' },
+  );
 
-    /** Usuário logado (mock) */
-    user: { name: string; email: string } | null = { name: 'João Silva', email: 'joao@email.com' };
+  ngOnInit(): void {
+    this.onlineListener = () => this.isOnline.set(true);
+    this.offlineListener = () => this.isOnline.set(false);
 
-    /** Estado do menu do usuário */
-    menuOpen = false;
+    window.addEventListener('online', this.onlineListener);
+    window.addEventListener('offline', this.offlineListener);
 
-    /** Listener para mudanças de conectividade */
-    private onlineListener: (() => void) | null = null;
-    private offlineListener: (() => void) | null = null;
+    this.clickOutsideListener = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.user-menu')) {
+        this.menuOpen.set(false);
+      }
+    };
+    document.addEventListener('click', this.clickOutsideListener);
 
-    /**
-     * @param router Serviço de roteamento do Angular
-     */
-    constructor(private router: Router) { }
+    this.checkCacheAvailability();
+  }
 
-    ngOnInit(): void {
-        // Monitora status de conectividade
-        this.onlineListener = () => this.isOnline = true;
-        this.offlineListener = () => this.isOnline = false;
+  ngOnDestroy(): void {
+    if (this.onlineListener) window.removeEventListener('online', this.onlineListener);
+    if (this.offlineListener) window.removeEventListener('offline', this.offlineListener);
+    if (this.clickOutsideListener) document.removeEventListener('click', this.clickOutsideListener);
+  }
 
-        window.addEventListener('online', this.onlineListener);
-        window.addEventListener('offline', this.offlineListener);
-
-        // Fecha menu ao clicar fora
-        document.addEventListener('click', (event) => {
-            const target = event.target as HTMLElement;
-            if (!target.closest('.user-menu')) {
-                this.menuOpen = false;
-            }
-        });
-
-        // Verifica se tem cache disponível
-        this.checkCacheAvailability();
+  private async checkCacheAvailability(): Promise<void> {
+    if (!('caches' in window)) {
+      this.hasCache.set(false);
+      return;
     }
 
-    ngOnDestroy(): void {
-        // Remove listeners
-        if (this.onlineListener) {
-            window.removeEventListener('online', this.onlineListener);
-        }
-        if (this.offlineListener) {
-            window.removeEventListener('offline', this.offlineListener);
-        }
+    try {
+      const cacheNames = await caches.keys();
+      this.hasCache.set(cacheNames.length > 0);
+    } catch {
+      this.hasCache.set(false);
     }
+  }
 
-    /**
-     * Verifica se o Cache API está disponível
-     */
-    private async checkCacheAvailability(): Promise<void> {
-        if ('caches' in window) {
-            try {
-                const cacheNames = await caches.keys();
-                this.hasCache = cacheNames.length > 0;
-            } catch {
-                this.hasCache = false;
-            }
-        } else {
-            this.hasCache = false;
-        }
-    }
+  toggleMenu(): void {
+    this.menuOpen.update((v) => !v);
+  }
 
-    /**
-     * Retorna ícone e texto para status de conectividade
-     */
-    get connectivityStatus(): { colorClass: string; text: string } {
-        return this.isOnline
-            ? { colorClass: 'status-green', text: 'Online' }
-            : { colorClass: 'status-red', text: 'Offline' };
-    }
-    /**
-     * Retorna classe de cor e texto para status de cache
-     */
-    get cacheStatus(): { colorClass: string; text: string } {
-        return this.hasCache
-            ? { colorClass: 'status-green', text: 'Cache disponível' }
-            : { colorClass: 'status-red', text: 'Cache indisponível' };
-    }
+  goToProfile(): void {
+    this.menuOpen.set(false);
+    this.router.navigate(['/perfil']);
+  }
 
-    /**
-     * Alterna a visibilidade do menu do usuário
-     */
-    toggleMenu(): void {
-        this.menuOpen = !this.menuOpen;
-    }
-
-    /**
-     * Navega para a página de perfil
-     */
-    goToProfile(): void {
-        this.menuOpen = false;
-        // Navega para a página de perfil
-        this.router.navigate(['/perfil']);
-    }
-
-    /**
-     * Faz logout do usuário
-     */
-    logout(): void {
-        this.menuOpen = false;
-        // Remove dados do usuário
-        this.user = null;
-        // Redireciona para página de login
-        this.router.navigate(['/login']);
-    }
+  logout(): void {
+    this.menuOpen.set(false);
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 }

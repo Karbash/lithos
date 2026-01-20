@@ -1,4 +1,3 @@
-<!-- Lithos Style Layout -->
 <div class="lithos-layout">
   <!-- Header -->
   <header class="lithos-header">
@@ -9,13 +8,13 @@
       </a>
     </div>
     <div class="lithos-header-right">
-      @if (user) {
+      @if (user()) {
         <div class="user-menu">
           <button class="user-button" (click)="toggleMenu()">
-            <span class="user-avatar">{{ user.name.charAt(0) }}</span>
-            <span class="user-name">{{ user.name }}</span>
+            <span class="user-avatar">{{ user()!.name.charAt(0) }}</span>
+            <span class="user-name">{{ user()!.name }}</span>
           </button>
-          @if (menuOpen) {
+          @if (menuOpen()) {
             <div class="user-dropdown">
               <button class="dropdown-item" (click)="goToProfile()">Perfil</button>
               <button class="dropdown-item" (click)="logout()">Sair</button>
@@ -26,7 +25,7 @@
     </div>
   </header>
 
-  <!-- Main -->
+  <!-- Main Content -->
   <main class="lithos-main">
     <div class="lithos-watermark">
       <img src="logo.svg" alt="" class="lithos-watermark-logo" />
@@ -34,27 +33,23 @@
     <router-outlet></router-outlet>
   </main>
 
-  <!-- Footer - Lithos Status Bar -->
+  <!-- Footer -->
   <footer class="lithos-footer">
-    <div class="lithos-status-left">
-      <span class="lithos-status-item">
-        <div class="lithos-status-dot" [class]="connectivityStatus.colorClass"></div>
-        <span class="lithos-status-text">{{ connectivityStatus.text }}</span>
+    <div class="lithos-footer-left">
+      <span class="lithos-status" [class]="connectivityStatus().colorClass">
+        <span class="lithos-status-dot"></span>
+        {{ connectivityStatus().text }}
       </span>
-      <span class="lithos-status-item">
-        <div class="lithos-status-dot" [class]="cacheStatus.colorClass"></div>
-        <span class="lithos-status-text">{{ cacheStatus.text }}</span>
-      </span>
-    </div>
-    <div class="lithos-status-center">
-      <span class="lithos-status-item">
-        <span class="lithos-status-text">{{ appVersion }}</span>
+      <span class="lithos-status" [class]="cacheStatus().colorClass">
+        <span class="lithos-status-dot"></span>
+        {{ cacheStatus().text }}
       </span>
     </div>
-    <div class="lithos-status-right">
-      <span class="lithos-status-item">
-        <span class="lithos-status-text">{{ copyrightText }}</span>
-      </span>
+    <div class="lithos-footer-center">
+      <span class="lithos-version">{{ appVersion }}</span>
+    </div>
+    <div class="lithos-footer-right">
+      <span class="lithos-copyright">{{ copyrightText }}</span>
     </div>
   </footer>
 </div>
