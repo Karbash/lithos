@@ -1,8 +1,0 @@
-# Configuração para uma única instância no Render
-# Execute: npm install && node start.js
-
-# Ou configure manualmente no Render:
-# - Type: Web Service
-# - Runtime: Node
-# - Build Command: npm install
-# - Start Command: node start.js
